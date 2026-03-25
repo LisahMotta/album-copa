@@ -5,7 +5,7 @@ export function ProgressoGrupos({ colecao }) {
   const grupos = calcularProgressoPorGrupo(colecao)
 
   return (
-    <div style={{ padding: '12px 14px 0' }}>
+    <div style={{ padding: '12px 14px 100px' }}>
       <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
         Progresso por grupo
       </div>

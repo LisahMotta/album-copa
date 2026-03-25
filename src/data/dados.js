@@ -139,3 +139,61 @@ export function getRepetidas(colecao) {
   })
   return lista
 }
+
+// Figurinhas raras (brilhantes) — posições especiais
+export const POSICOES_RARAS = new Set([1, 15, 18]) // Escudo, Camisa 10, Capitão
+
+// Preço médio por pacotinho (5 figurinhas)
+export const PRECO_PACOTINHO = 4.00
+export const TOTAL_ALBUM = 640  // total oficial do álbum Panini
+
+// Progresso por grupo
+export function calcularProgressoPorGrupo(colecao) {
+  const grupos = {}
+  SELECOES.forEach(sel => {
+    if (!grupos[sel.grupo]) grupos[sel.grupo] = { total: 0, coletadas: 0, selecoes: [] }
+    const st = calcularStatsSelecao(colecao, sel.id)
+    grupos[sel.grupo].total     += st.total
+    grupos[sel.grupo].coletadas += st.coletadas
+    grupos[sel.grupo].selecoes.push({ sel, st })
+  })
+  return Object.entries(grupos)
+    .sort(([a],[b]) => a.localeCompare(b))
+    .map(([grupo, dados]) => ({
+      grupo,
+      ...dados,
+      pct: Math.round((dados.coletadas / dados.total) * 100)
+    }))
+}
+
+// Calcular pacotinhos e custo estimado
+export function calcularPacotinhos(colecao) {
+  const { faltam } = calcularStats(colecao)
+  // Probabilidade de pegar figurinha nova (fórmula do colecionador)
+  const total = TOTAL_ALBUM
+  let esperados = 0
+  for (let i = 0; i < faltam; i++) {
+    esperados += total / (total - i)
+  }
+  const pacotinhos = Math.ceil(esperados / 5)
+  const custo = pacotinhos * PRECO_PACOTINHO
+  return { faltam, pacotinhos, custo, pacotinhosMinimo: Math.ceil(faltam / 5) }
+}
+
+// Conquistas disponíveis
+export const CONQUISTAS = [
+  { id: 'primeira',   icon: '⭐', titulo: 'Primeira figurinha!',     desc: 'Coletou sua primeira figurinha',          check: (c) => Object.values(c).some(f => f.status !== 'falta') },
+  { id: 'dez',        icon: '🔟', titulo: 'Dez coletadas',           desc: '10 figurinhas no álbum',                  check: (c) => calcularStats(c).coletadas >= 10 },
+  { id: 'cinquenta',  icon: '5️⃣0️⃣', titulo: 'Cinquenta figurinhas',  desc: '50 figurinhas coletadas',                 check: (c) => calcularStats(c).coletadas >= 50 },
+  { id: 'cem',        icon: '💯', titulo: 'Cem figurinhas',          desc: '100 figurinhas no álbum',                 check: (c) => calcularStats(c).coletadas >= 100 },
+  { id: 'duzentas',   icon: '🎖️', titulo: 'Meio caminho',            desc: '200 figurinhas coletadas',                check: (c) => calcularStats(c).coletadas >= 200 },
+  { id: 'selecao1',   icon: '🏅', titulo: 'Seleção completa',        desc: 'Completou uma seleção inteira',           check: (c) => SELECOES.some(s => calcularStatsSelecao(c, s.id).pct === 100) },
+  { id: 'tresselecoes',icon:'🥇', titulo: 'Três seleções',           desc: 'Completou 3 seleções',                    check: (c) => SELECOES.filter(s => calcularStatsSelecao(c, s.id).pct === 100).length >= 3 },
+  { id: 'repetidor',  icon: '🔁', titulo: 'Colecionador de extras',  desc: 'Tem 10 figurinhas extras',                check: (c) => calcularStats(c).repetidas >= 10 },
+  { id: 'trocador',   icon: '🤝', titulo: 'Primeira troca',          desc: 'Realizou sua primeira troca',             check: (_, h) => h.length >= 1 },
+  { id: 'album80',    icon: '🏆', titulo: 'Quase lá!',               desc: '80% do álbum completo',                  check: (c) => calcularStats(c).pct >= 80 },
+]
+
+export function verificarConquistas(colecao, historico) {
+  return CONQUISTAS.map(c => ({ ...c, desbloqueada: c.check(colecao, historico) }))
+}

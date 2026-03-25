@@ -2,34 +2,28 @@ import { FlagBadge } from './FlagBadge'
 
 const MAX_QTD = 5
 
-export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostrarFlag = false, temAnotacao = false }) {
+export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostrarFlag = false, temAnotacao = false, eRara = false }) {
   const { status, qtd } = figurinha
   const extras = status === 'repetida' ? (qtd || 2) - 1 : 0
-  const noMax = status === 'repetida' && (qtd || 2) >= MAX_QTD
+  const noMax  = status === 'repetida' && (qtd || 2) >= MAX_QTD
+  const eEscudo = pos === 1
 
-  function handleClick(e) {
-    onClick?.()
-  }
-
-  function handleContextMenu(e) {
-    e.preventDefault()
-    onLongPress?.()
-  }
-
-  // Long press para mobile
   let pressTimer = null
-  function handleTouchStart() {
-    pressTimer = setTimeout(() => { onLongPress?.() }, 500)
-  }
-  function handleTouchEnd() {
-    clearTimeout(pressTimer)
-  }
+  function handleTouchStart() { pressTimer = setTimeout(() => onLongPress?.(), 500) }
+  function handleTouchEnd()   { clearTimeout(pressTimer) }
+
+  // Classe base
+  let classCard = `fig-card`
+  if (eRara && status === 'coletada') classCard += ' rara-coletada'
+  else if (eRara && status === 'falta') classCard += ' rara-vazia'
+  else if (eEscudo && status === 'falta') classCard += ' escudo-vazio'
+  else if (status !== 'falta') classCard += ` ${status}`
 
   return (
     <div
-      className={`fig-card ${status !== 'falta' ? status : ''}`}
-      onClick={handleClick}
-      onContextMenu={handleContextMenu}
+      className={classCard}
+      onClick={() => onClick?.()}
+      onContextMenu={e => { e.preventDefault(); onLongPress?.() }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
@@ -48,13 +42,29 @@ export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostr
         <div className="badge-check">✓</div>
       )}
 
+      {/* Badge rara */}
+      {eRara && <div className="badge-rara">✨</div>}
+
       {/* Indicador de anotação */}
       {temAnotacao && <div className="badge-nota" />}
 
-      {/* Flag ou sigla */}
-      {mostrarFlag && <FlagBadge sel={selecao} size={18} />}
+      {/* Conteúdo central */}
+      {eEscudo ? (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+          <span style={{ fontSize: 18, lineHeight: 1 }}>🛡️</span>
+          {mostrarFlag && <FlagBadge sel={selecao} size={12} />}
+        </div>
+      ) : (
+        mostrarFlag && <FlagBadge sel={selecao} size={18} />
+      )}
 
-      <span style={{ fontSize: 9, color: 'var(--text-muted)', marginTop: 2 }}>#{pos}</span>
+      <span style={{
+        fontSize: 9, marginTop: 2,
+        color: eEscudo ? 'var(--gold)' : eRara ? '#7c3aed' : 'var(--text-muted)',
+        fontWeight: (eEscudo || eRara) ? 700 : 400
+      }}>
+        {eEscudo ? 'ESC' : `#${pos}`}
+      </span>
     </div>
   )
 }

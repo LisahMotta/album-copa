@@ -204,7 +204,7 @@ export function Historico({ historico, onLimpar }) {
 }
 
 // ── Painel de configurações ────────────────────────────────
-export function PainelConfig({ darkMode, onToggleTema, colecao, anotacoes, onImportar, historico, onLimparHistorico }) {
+export function PainelConfig({ darkMode, onToggleTema, colecao, anotacoes, onImportar, historico, onLimparHistorico, onZerar, zerarAtivo }) {
   return (
     <div className="scroll-area" style={{ padding: '16px 14px 100px' }}>
 
@@ -272,6 +272,27 @@ export function PainelConfig({ darkMode, onToggleTema, colecao, anotacoes, onImp
         </div>
         <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
           O backup salva todas as figurinhas e anotações. Use para transferir entre dispositivos.
+        </div>
+      </div>
+
+      {/* Zona de perigo */}
+      <div style={{ marginTop: 32 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+          Zona de perigo
+        </div>
+        <button onClick={onZerar} style={{
+          width: '100%', padding: '13px 16px', borderRadius: 12,
+          border: '1.5px solid var(--red)',
+          background: zerarAtivo ? 'var(--red)' : 'var(--red-pale)',
+          color: zerarAtivo ? '#fff' : 'var(--red)',
+          fontFamily: 'var(--font-body)',
+          fontSize: 15, fontWeight: 700, cursor: 'pointer', textAlign: 'center',
+          transition: 'all 0.2s'
+        }}>
+          {zerarAtivo ? '⚠️ Toque novamente para confirmar' : '🗑️ Zerar todas as figurinhas'}
+        </button>
+        <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
+          Apaga toda a coleção e começa do zero. Faça um backup antes!
         </div>
       </div>
 

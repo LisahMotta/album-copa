@@ -12,7 +12,7 @@ import { GerarImagem } from './components/GerarImagem'
 import { PainelConfig } from './components/Extras'
 import { Calculadora } from './components/Calculadora'
 import { Toast, showToast } from './components/Toast'
-import { useColecao } from './hooks/useColecao'
+import { useColecao, zerarColecao } from './hooks/useColecao'
 import { useHistorico } from './hooks/useHistorico'
 import { useAnotacoes } from './hooks/useAnotacoes'
 import { useTema } from './hooks/useTema'
@@ -100,6 +100,16 @@ export default function App() {
     showToast('Backup restaurado!')
   }, [importarColecao, salvarAnotacao])
 
+  const handleZerar = useCallback(() => {
+    if (!confirmarZerar) {
+      setConfirmarZerar(true)
+      setTimeout(() => setConfirmarZerar(false), 4000)
+      return
+    }
+    zerarColecao()
+    window.location.reload()
+  }, [confirmarZerar])
+
   // Scanner coletou figurinha
   const handleScannerColetar = useCallback((selId, pos) => {
     const fig = getFigurinha(selId, pos)
@@ -135,6 +145,8 @@ export default function App() {
               }}>📸 Gerar imagem para Instagram</button>
             </div>
             <PainelConfig
+              onZerar={handleZerar}
+              zerarAtivo={confirmarZerar}
               darkMode={darkMode} onToggleTema={toggleTema}
               colecao={colecao} anotacoes={anotacoes}
               onImportar={handleImportar}

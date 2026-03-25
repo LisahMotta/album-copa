@@ -90,3 +90,8 @@ export function useColecao() {
 
 // Exportado separadamente para uso no App
 export { MAX_QTD }
+
+// Zerar toda a coleção
+export function zerarColecao() {
+  localStorage.removeItem('album_copa_v2')
+}

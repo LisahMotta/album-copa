@@ -59,7 +59,7 @@ export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostr
       )}
 
       <span style={{
-        fontSize: 9, marginTop: 2,
+        fontSize: 16, marginTop: 2,
         color: eEscudo ? 'var(--gold)' : eRara ? '#7c3aed' : 'var(--text-muted)',
         fontWeight: (eEscudo || eRara) ? 700 : 400
       }}>

@@ -26,7 +26,8 @@ export default function App() {
   const [modalRemover, setModalRemover] = useState(null)
   const [modalAnotacao, setModalAnotacao] = useState(null)
   const [modalScanner, setModalScanner] = useState(false)
-  const [modalImagem, setModalImagem] = useState(false)
+  const [modalImagem,    setModalImagem]    = useState(false)
+  const [confirmarZerar, setConfirmarZerar] = useState(false)
   const [conquistasAntes, setConquistasAntes] = useState([])
 
   const { colecao, clicarFigurinha, removerExtras, realizarTroca, getFigurinha, importarColecao } = useColecao()

@@ -1,26 +1,21 @@
-import { calcularStats } from '../data/dados'
+export function StatsBar({ stats }) {
+  const { total, coletadas, repetidas, faltam } = stats
 
-export function StatsBar({ colecao }) {
-  const { total, coletadas, repetidas, faltam } = calcularStats(colecao)
+  const itens = [
+    { label: 'coletadas', valor: coletadas, cor: 'var(--gold)',   bg: 'var(--gold-pale)',  textCor: '#633806' },
+    { label: 'faltam',    valor: faltam,    cor: 'var(--border)', bg: 'var(--bg-card)',    textCor: 'var(--text-muted)' },
+    { label: 'extras',    valor: repetidas, cor: 'var(--green)',  bg: 'var(--green-pale)', textCor: '#1a5c34' },
+    { label: 'total',     valor: total,     cor: 'var(--border)', bg: 'var(--bg-card)',    textCor: 'var(--text-muted)' },
+  ]
 
   return (
     <div className="stats-bar">
-      <div className="stat-pill gold">
-        <span className="num">{coletadas}</span>
-        <span className="lbl">coletadas</span>
-      </div>
-      <div className="stat-pill">
-        <span className="num" style={{ color: 'var(--text)' }}>{faltam}</span>
-        <span className="lbl">faltam</span>
-      </div>
-      <div className="stat-pill green">
-        <span className="num">{repetidas}</span>
-        <span className="lbl">extras</span>
-      </div>
-      <div className="stat-pill">
-        <span className="num" style={{ color: 'var(--text-muted)' }}>{total}</span>
-        <span className="lbl">total</span>
-      </div>
+      {itens.map(({ label, valor, cor, bg, textCor }) => (
+        <div key={label} className="stat-pill" style={{ border: `1.5px solid ${cor}`, background: bg }}>
+          <span className="num" style={{ color: textCor }}>{valor}</span>
+          <span className="lbl" style={{ color: textCor, opacity: 0.8 }}>{label}</span>
+        </div>
+      ))}
     </div>
   )
 }

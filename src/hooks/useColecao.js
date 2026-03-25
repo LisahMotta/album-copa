@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react'
-import { iniciarColecao, salvarColecao, gerarChave } from '../data/dados'
+import { iniciarColecaoCompleta, salvarColecao, gerarChave } from '../data/dados'
 
 const MAX_QTD = 5  // máximo total por figurinha (1 álbum + 4 extras)
 
 export function useColecao() {
-  const [colecao, setColecao] = useState(() => iniciarColecao())
+  const [colecao, setColecao] = useState(() => iniciarColecaoCompleta())
 
   const aplicarUpdates = useCallback((updates) => {
     setColecao(prev => {
@@ -85,7 +85,24 @@ export function useColecao() {
     salvarColecao(novaColecao)
   }, [])
 
-  return { colecao, clicarFigurinha, removerExtras, remover, realizarTroca, getFigurinha, importarColecao }
+
+  const clicarEspecial = useCallback((key) => {
+    setColecao(prev => {
+      const atual = prev[key] || { status: 'falta', qtd: 0 }
+      let novo
+      if (atual.status === 'falta')       novo = { status: 'coletada', qtd: 1 }
+      else if (atual.status === 'coletada') novo = { status: 'repetida', qtd: 2 }
+      else if (atual.status === 'repetida') {
+        if ((atual.qtd || 2) >= 5) return prev
+        novo = { status: 'repetida', qtd: (atual.qtd || 2) + 1 }
+      } else return prev
+      const nova = { ...prev, [key]: novo }
+      salvarColecao(nova)
+      return nova
+    })
+  }, [])
+
+  return { colecao, clicarFigurinha, clicarEspecial, removerExtras, remover, realizarTroca, getFigurinha, importarColecao }
 }
 
 // Exportado separadamente para uso no App
@@ -95,3 +112,6 @@ export { MAX_QTD }
 export function zerarColecao() {
   localStorage.removeItem('album_copa_v2')
 }
+
+// Clicar em figurinha especial (funciona igual ao clicarFigurinha mas por key direta)
+export function useClicarEspecial(setColecao) {}

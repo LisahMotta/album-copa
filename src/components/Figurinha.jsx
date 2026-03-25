@@ -55,13 +55,13 @@ export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostr
           {mostrarFlag && <FlagBadge sel={selecao} size={12} />}
         </div>
       ) : (
-        mostrarFlag && <FlagBadge sel={selecao} size={18} />
+        mostrarFlag && <FlagBadge sel={selecao} size={16} />
       )}
 
       <span style={{
-        fontSize: 16, marginTop: 2,
+        fontSize: 13, marginTop: 2, lineHeight: 1,
         color: eEscudo ? 'var(--gold)' : eRara ? '#7c3aed' : 'var(--text-muted)',
-        fontWeight: (eEscudo || eRara) ? 700 : 400
+        fontWeight: (eEscudo || eRara) ? 700 : 600
       }}>
         {eEscudo ? 'ESC' : `#${pos}`}
       </span>

@@ -1,7 +1,5 @@
-import { calcularStats } from '../data/dados'
-
-export function Header({ colecao, onScanner }) {
-  const { total, coletadas, pct } = calcularStats(colecao)
+export function Header({ stats, onScanner }) {
+  const { total, coletadas, pct } = stats
 
   return (
     <header className="app-header">
@@ -22,7 +20,6 @@ export function Header({ colecao, onScanner }) {
         <div style={{ fontFamily: 'var(--font-display)', fontSize: 28, color: 'var(--gold-light)', letterSpacing: '0.02em', lineHeight: 1 }}>
           {pct}%
         </div>
-        {/* Botão scanner */}
         <button onClick={onScanner} title="Registrar figurinha" style={{
           width: 38, height: 38, borderRadius: 10, flexShrink: 0,
           background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)',

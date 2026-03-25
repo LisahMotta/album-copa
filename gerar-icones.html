@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Gerar Ícones PWA</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 30px; background: #f0f0f0; }
+  h2 { color: #1a1a2e; }
+  canvas { border: 2px solid #c8922a; border-radius: 12px; margin: 10px; }
+  button {
+    display: block; margin: 10px 0; padding: 12px 24px;
+    background: #c8922a; color: white; border: none;
+    border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold;
+  }
+  button:hover { background: #a07020; }
+  .ok { color: green; font-weight: bold; }
+  .instrucoes { background: #fff; padding: 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #c8922a; }
+</style>
+</head>
+<body>
+<h2>⚽ Gerador de Ícones — Álbum Copa 2026</h2>
+
+<div class="instrucoes">
+  <b>Instruções:</b><br>
+  1. Clique em <b>"Baixar icon-512.png"</b> e salve na pasta <code>D:\album-copa\public\</code><br>
+  2. Clique em <b>"Baixar icon-192.png"</b> e salve na pasta <code>D:\album-copa\public\</code><br>
+  3. Clique em <b>"Baixar apple-touch-icon.png"</b> e salve na pasta <code>D:\album-copa\public\</code><br>
+  4. Faça <code>git add public/ && git commit -m "fix: ícones PWA" && git push</code>
+</div>
+
+<div style="display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start;">
+  <div>
+    <p>512×512</p>
+    <canvas id="c512" width="512" height="512"></canvas><br>
+    <button onclick="baixar('c512','icon-512.png')">⬇ Baixar icon-512.png</button>
+  </div>
+  <div>
+    <p>192×192</p>
+    <canvas id="c192" width="192" height="192" style="width:192px;height:192px"></canvas><br>
+    <button onclick="baixar('c192','icon-192.png')">⬇ Baixar icon-192.png</button>
+    <button onclick="baixar('c192','apple-touch-icon.png')">⬇ Baixar apple-touch-icon.png</button>
+  </div>
+</div>
+
+<p id="status"></p>
+
+<script>
+function desenhar(canvas) {
+  const ctx = canvas.getContext('2d')
+  const s = canvas.width
+
+  // Fundo arredondado
+  ctx.clearRect(0, 0, s, s)
+  ctx.beginPath()
+  ctx.roundRect(0, 0, s, s, s * 0.17)
+  ctx.fillStyle = '#0a1628'
+  ctx.fill()
+  ctx.save()
+  ctx.clip()
+
+  // Faixas azuis
+  ctx.fillStyle = '#1a3a6e'
+  ctx.fillRect(0, 0, s, s * 0.38)
+  ctx.fillStyle = '#2d5a9e'
+  ctx.fillRect(0, s * 0.35, s, s * 0.32)
+  ctx.fillStyle = '#1a5ba8'
+  ctx.fillRect(0, s * 0.62, s, s * 0.38)
+
+  // Elipses coloridas
+  function elipse(cx, cy, rx, ry, cor) {
+    ctx.beginPath()
+    ctx.ellipse(cx*s, cy*s, rx*s, ry*s, 0, 0, Math.PI*2)
+    ctx.fillStyle = cor
+    ctx.fill()
+  }
+  elipse(0.13, 0.24, 0.11, 0.15, '#2ea84e')
+  elipse(0.87, 0.76, 0.11, 0.15, '#e8501a')
+  elipse(0.87, 0.24, 0.10, 0.14, '#7b3fa8')
+  elipse(0.13, 0.76, 0.09, 0.13, '#e8b820')
+  elipse(0.50, 0.13, 0.08, 0.10, '#18a8c8')
+
+  // Faixa Panini vermelha
+  ctx.fillStyle = '#e8001a'
+  ctx.fillRect(0, 0, s, s * 0.09)
+  ctx.fillStyle = '#ffffff'
+  ctx.font = `bold ${s*0.045}px Arial`
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('PANINI', s/2, s*0.048)
+
+  // Taça dourada
+  const tw = s*0.22, th = s*0.18, tx = s/2, ty = s*0.27
+  ctx.fillStyle = '#c8922a'
+  ctx.beginPath()
+  ctx.moveTo(tx-tw*0.45, ty-th*0.5)
+  ctx.lineTo(tx-tw*0.32, ty+th*0.2)
+  ctx.quadraticCurveTo(tx-tw*0.28, ty+th*0.55, tx, ty+th*0.55)
+  ctx.quadraticCurveTo(tx+tw*0.28, ty+th*0.55, tx+tw*0.32, ty+th*0.2)
+  ctx.lineTo(tx+tw*0.45, ty-th*0.5)
+  ctx.closePath()
+  ctx.fill()
+  // alças
+  ctx.beginPath()
+  ctx.moveTo(tx-tw*0.32, ty-th*0.2)
+  ctx.quadraticCurveTo(tx-tw*0.52, ty, tx-tw*0.32, ty+th*0.3)
+  ctx.strokeStyle = '#c8922a'; ctx.lineWidth = s*0.022; ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(tx+tw*0.32, ty-th*0.2)
+  ctx.quadraticCurveTo(tx+tw*0.52, ty, tx+tw*0.32, ty+th*0.3)
+  ctx.stroke()
+  // base
+  ctx.fillRect(tx-tw*0.17, ty+th*0.55, tw*0.34, th*0.1)
+  ctx.beginPath()
+  ctx.roundRect(tx-tw*0.24, ty+th*0.65, tw*0.48, th*0.09, 3)
+  ctx.fill()
+
+  // Número 26
+  ctx.fillStyle = 'rgba(255,255,255,0.97)'
+  ctx.font = `900 ${s*0.43}px 'Arial Black', Arial`
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('26', s/2, s*0.665)
+
+  // Faixa inferior
+  ctx.fillStyle = 'rgba(5,5,5,0.9)'
+  ctx.fillRect(0, s*0.84, s, s*0.16)
+  ctx.fillStyle = '#c8922a'
+  ctx.font = `700 ${s*0.038}px Arial`
+  ctx.textBaseline = 'middle'
+  ctx.fillText('WORLD CUP 2026', s/2, s*0.875)
+  ctx.fillStyle = '#ffffff'
+  ctx.font = `900 ${s*0.052}px 'Arial Black', Arial`
+  ctx.fillText('ÁLBUM COPA', s/2, s*0.938)
+
+  ctx.restore()
+
+  // Borda dourada
+  ctx.beginPath()
+  ctx.roundRect(s*0.018, s*0.018, s*0.964, s*0.964, s*0.155)
+  ctx.strokeStyle = '#c8922a'
+  ctx.lineWidth = s * 0.024
+  ctx.stroke()
+}
+
+function baixar(id, nome) {
+  const canvas = document.getElementById(id)
+  const a = document.createElement('a')
+  a.href = canvas.toDataURL('image/png')
+  a.download = nome
+  a.click()
+  document.getElementById('status').innerHTML =
+    `<span class="ok">✓ ${nome} baixado! Salve em D:\\album-copa\\public\\</span>`
+}
+
+// Desenhar ao carregar
+window.onload = () => {
+  desenhar(document.getElementById('c512'))
+  desenhar(document.getElementById('c192'))
+}
+</script>
+</body>
+</html>

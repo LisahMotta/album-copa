@@ -5,6 +5,7 @@ import { BottomNav } from './components/BottomNav'
 import { Painel } from './components/Painel'
 import { Selecoes } from './components/Selecoes'
 import { Troca } from './components/Troca'
+import { Especiais } from './components/Especiais'
 import { ModalRemoverExtras } from './components/ModalRemoverExtras'
 import { ModalAnotacao } from './components/ModalAnotacao'
 import { Scanner } from './components/Scanner'
@@ -17,20 +18,23 @@ import { useHistorico } from './hooks/useHistorico'
 import { useAnotacoes } from './hooks/useAnotacoes'
 import { useTema } from './hooks/useTema'
 import { usePacotinhos } from './hooks/usePacotinhos'
-import { SELECOES, calcularStatsSelecao, verificarConquistas, CONQUISTAS } from './data/dados'
+import {
+  SELECOES, calcularStatsSelecao, verificarConquistas,
+  gerarChaveEspecial, calcularStatsCompleto
+} from './data/dados'
 
 const MAX_QTD = 5
 
 export default function App() {
   const [aba, setAba] = useState('painel')
-  const [modalRemover, setModalRemover] = useState(null)
-  const [modalAnotacao, setModalAnotacao] = useState(null)
-  const [modalScanner, setModalScanner] = useState(false)
+  const [modalRemover,   setModalRemover]   = useState(null)
+  const [modalAnotacao,  setModalAnotacao]  = useState(null)
+  const [modalScanner,   setModalScanner]   = useState(false)
   const [modalImagem,    setModalImagem]    = useState(false)
   const [confirmarZerar, setConfirmarZerar] = useState(false)
   const [conquistasAntes, setConquistasAntes] = useState([])
 
-  const { colecao, clicarFigurinha, removerExtras, realizarTroca, getFigurinha, importarColecao } = useColecao()
+  const { colecao, clicarFigurinha, removerExtras, realizarTroca, getFigurinha, importarColecao, clicarEspecial } = useColecao()
   const { historico, registrar, limpar: limparHistorico } = useHistorico()
   const { anotacoes, salvarAnotacao, getAnotacao } = useAnotacoes()
   const { darkMode, toggleTema } = useTema()
@@ -52,12 +56,11 @@ export default function App() {
   useEffect(() => {
     const atuais = verificarConquistas(colecao, historico)
     const novas = atuais.filter(c => c.desbloqueada && !conquistasAntes.find(a => a.id === c.id && a.desbloqueada))
-    novas.forEach((c, i) => {
-      setTimeout(() => showToast(`${c.icon} Conquista: ${c.titulo}`), i * 1200)
-    })
+    novas.forEach((c, i) => setTimeout(() => showToast(`${c.icon} Conquista: ${c.titulo}`), i * 1200))
     setConquistasAntes(atuais)
   }, [colecao, historico])
 
+  // Clique em figurinha normal
   const handleClique = useCallback((selId, pos) => {
     const fig = getFigurinha(selId, pos)
     if (fig.status === 'repetida' && (fig.qtd || 2) >= MAX_QTD) {
@@ -74,18 +77,38 @@ export default function App() {
     }
   }, [getFigurinha, clicarFigurinha])
 
+  // Clique em figurinha especial
+  const handleCliqueEspecial = useCallback((key, fig) => {
+    if (fig.status === 'repetida' && (fig.qtd || 2) >= MAX_QTD) {
+      setModalRemover({ key, isEspecial: true, qtd: fig.qtd })
+      return
+    }
+    clicarEspecial(key)
+    if (fig.status === 'falta')         showToast('Figurinha especial coletada! ✨')
+    else if (fig.status === 'coletada') showToast('Marcada como extra')
+    else showToast(`${(fig.qtd || 2)} extras`)
+  }, [clicarEspecial])
+
   const handleLongPress = useCallback((selId, pos, key) => {
     setModalAnotacao({ selId, pos, key })
   }, [])
 
+  const handleLongPressEspecial = useCallback((key) => {
+    setModalAnotacao({ selId: null, pos: null, key })
+  }, [])
+
   const handleConfirmarRemover = useCallback((quantas) => {
     if (!modalRemover) return
-    const { selId, pos, qtd } = modalRemover
-    removerExtras(selId, pos, quantas)
+    const { selId, pos, qtd, key, isEspecial } = modalRemover
+    if (isEspecial) {
+      clicarEspecial(key, -quantas)
+    } else {
+      removerExtras(selId, pos, quantas)
+    }
     const sobra = (qtd || 2) - 1 - quantas
     showToast(sobra <= 0 ? 'Voltou ao álbum' : `${quantas} extra${quantas !== 1 ? 's' : ''} removida${quantas !== 1 ? 's' : ''}`)
     setModalRemover(null)
-  }, [modalRemover, removerExtras])
+  }, [modalRemover, removerExtras, clicarEspecial])
 
   const handleTroca = useCallback((keyFaltante, keyRepetida) => {
     const [selIdRec, numRec] = keyFaltante.split('_')
@@ -111,32 +134,28 @@ export default function App() {
     window.location.reload()
   }, [confirmarZerar])
 
-  // Scanner coletou figurinha
   const handleScannerColetar = useCallback((selId, pos) => {
     const fig = getFigurinha(selId, pos)
     clicarFigurinha(selId, pos)
-    if (fig.status === 'falta') showToast('Coletada via scanner! ⭐')
-    else showToast('Extra registrada via scanner')
+    showToast(fig.status === 'falta' ? 'Coletada via scanner! ⭐' : 'Extra registrada via scanner')
   }, [getFigurinha, clicarFigurinha])
+
+  // Stats completas (seleções + especiais)
+  const statsCompletas = calcularStatsCompleto(colecao)
 
   return (
     <>
-      <Header colecao={colecao} darkMode={darkMode} onToggleTema={toggleTema}
-        onScanner={() => setModalScanner(true)} />
-      <StatsBar colecao={colecao} />
+      <Header stats={statsCompletas} onScanner={() => setModalScanner(true)} />
+      <StatsBar stats={statsCompletas} />
 
       <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        {aba === 'painel'   && <Painel   colecao={colecao} onClique={handleClique} onLongPress={handleLongPress} anotacoes={anotacoes} historico={historico} />}
-        {aba === 'selecoes' && <Selecoes colecao={colecao} onClique={handleClique} onLongPress={handleLongPress} anotacoes={anotacoes} />}
-        {aba === 'troca'    && <Troca    colecao={colecao} onTroca={handleTroca} />}
-        {aba === 'config'   && (
+        {aba === 'painel'    && <Painel    colecao={colecao} onClique={handleClique} onLongPress={handleLongPress} anotacoes={anotacoes} historico={historico} />}
+        {aba === 'selecoes'  && <Selecoes  colecao={colecao} onClique={handleClique} onLongPress={handleLongPress} anotacoes={anotacoes} />}
+        {aba === 'especiais' && <Especiais colecao={colecao} onClique={handleCliqueEspecial} onLongPress={handleLongPressEspecial} anotacoes={anotacoes} />}
+        {aba === 'troca'     && <Troca     colecao={colecao} onTroca={handleTroca} />}
+        {aba === 'config'    && (
           <div className="scroll-area">
-            <Calculadora
-              colecao={colecao}
-              pacotinhosAbertos={pacotinhos}
-              onAbrirPacotinho={abrirPacotinho}
-              onResetar={resetarPacotinhos}
-            />
+            <Calculadora colecao={colecao} pacotinhosAbertos={pacotinhos} onAbrirPacotinho={abrirPacotinho} onResetar={resetarPacotinhos} />
             <div style={{ padding: '0 14px' }}>
               <button onClick={() => setModalImagem(true)} style={{
                 width: '100%', padding: '13px', borderRadius: 12, marginBottom: 8,
@@ -146,8 +165,7 @@ export default function App() {
               }}>📸 Gerar imagem para Instagram</button>
             </div>
             <PainelConfig
-              onZerar={handleZerar}
-              zerarAtivo={confirmarZerar}
+              onZerar={handleZerar} zerarAtivo={confirmarZerar}
               darkMode={darkMode} onToggleTema={toggleTema}
               colecao={colecao} anotacoes={anotacoes}
               onImportar={handleImportar}
@@ -170,7 +188,6 @@ export default function App() {
       )}
       {modalScanner && <Scanner colecao={colecao} onColetar={handleScannerColetar} onFechar={() => setModalScanner(false)} />}
       {modalImagem  && <GerarImagem colecao={colecao} onFechar={() => setModalImagem(false)} />}
-
       <Toast />
     </>
   )

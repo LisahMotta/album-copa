@@ -47,7 +47,7 @@ export function Calculadora({ colecao, pacotinhosAbertos, onAbrirPacotinho, onRe
       <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, padding: '14px', marginBottom: 10 }}>
         <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8 }}>Preço do pacotinho (R$)</div>
         <div style={{ display: 'flex', gap: 8 }}>
-          {[2.50, 3.00, 4.00, 5.00].map(p => (
+          {[5.00, 6.00, 7.00, 8.00].map(p => (
             <button key={p} onClick={() => setPreco(p)} style={{
               flex: 1, padding: '8px 4px', borderRadius: 8,
               border: `1.5px solid ${preco === p ? 'var(--gold)' : 'var(--border)'}`,

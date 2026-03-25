@@ -4,62 +4,55 @@ import { StatsBar } from './components/StatsBar'
 import { BottomNav } from './components/BottomNav'
 import { Painel } from './components/Painel'
 import { Selecoes } from './components/Selecoes'
-import { Retidas } from './components/Retidas'
-import { FigModal } from './components/FigModal'
+import { Troca } from './components/Troca'
+import { ModalRemoverExtras } from './components/ModalRemoverExtras'
 import { Toast, showToast } from './components/Toast'
 import { useColecao } from './hooks/useColecao'
 
+const MAX_QTD = 5
+
 export default function App() {
   const [aba, setAba] = useState('painel')
-  const [modal, setModal] = useState(null)
+  const [modalRemover, setModalRemover] = useState(null)  // { selId, pos, qtd }
 
-  const { colecao, coletar, marcarRepetida, marcarRetida, remover, colarRetida, getFigurinha } = useColecao()
+  const { colecao, clicarFigurinha, removerExtras, realizarTroca, getFigurinha } = useColecao()
 
-  const abrirModal = useCallback((selId, pos, fig) => {
-    setModal({ selId, pos, statusAtual: fig.status, qtd: fig.qtd })
-  }, [])
+  // Único handler de clique em figurinha
+  const handleClique = useCallback((selId, pos) => {
+    const fig = getFigurinha(selId, pos)
 
-  const handleAcao = useCallback((acao) => {
-    if (!modal) return
-    const { selId, pos } = modal
-
-    switch (acao) {
-      case 'coletar':
-        coletar(selId, pos)
-        showToast('Figurinha coletada! ⭐')
-        break
-      case 'repetida':
-        marcarRepetida(selId, pos)
-        showToast('Marcada como repetida')
-        break
-      case 'reter':
-        marcarRetida(selId, pos)
-        showToast('Guardada como retida 📌')
-        break
-      case 'colar':
-        colarRetida(`${selId}_${pos}`)
-        showToast('Colada no álbum! ✓')
-        break
-      case 'remover':
-        remover(selId, pos)
-        showToast('Removida do álbum')
-        break
+    // Se está no máximo → abre modal para remover
+    if (fig.status === 'repetida' && (fig.qtd || 2) >= MAX_QTD) {
+      setModalRemover({ selId, pos, qtd: fig.qtd })
+      return
     }
 
-    setModal(null)
-  }, [modal, coletar, marcarRepetida, marcarRetida, colarRetida, remover])
+    // Qualquer outro caso → avança normalmente
+    clicarFigurinha(selId, pos)
 
-  const handleColar = useCallback((key) => {
-    colarRetida(key)
-    showToast('Colada no álbum! ✓')
-  }, [colarRetida])
+    // Toast de feedback
+    if (fig.status === 'falta')         showToast('Figurinha coletada! ⭐')
+    else if (fig.status === 'coletada') showToast('Marcada como repetida')
+    else {
+      const novaQtd = (fig.qtd || 2) + 1
+      if (novaQtd >= MAX_QTD)          showToast(`Máximo atingido! (${MAX_QTD - 1} extras) — clique para remover`)
+      else                              showToast(`${novaQtd - 1} extra${novaQtd - 1 !== 1 ? 's' : ''}`)
+    }
+  }, [getFigurinha, clicarFigurinha])
 
-  const modalComFig = modal ? {
-    ...modal,
-    ...getFigurinha(modal.selId, modal.pos),
-    statusAtual: modal.statusAtual,
-    qtd: getFigurinha(modal.selId, modal.pos).qtd
-  } : null
+  const handleConfirmarRemover = useCallback((quantas) => {
+    if (!modalRemover) return
+    const { selId, pos, qtd } = modalRemover
+    removerExtras(selId, pos, quantas)
+    const sobra = (qtd || 2) - 1 - quantas
+    showToast(sobra <= 0 ? 'Extras removidas — voltou ao álbum' : `${quantas} extra${quantas !== 1 ? 's' : ''} removida${quantas !== 1 ? 's' : ''}`)
+    setModalRemover(null)
+  }, [modalRemover, removerExtras])
+
+  const handleTroca = useCallback((keyFaltante, keyRepetida) => {
+    realizarTroca(keyFaltante, keyRepetida)
+    showToast('Troca realizada! ✓')
+  }, [realizarTroca])
 
   return (
     <>
@@ -67,24 +60,18 @@ export default function App() {
       <StatsBar colecao={colecao} />
 
       <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        {aba === 'painel' && (
-          <Painel colecao={colecao} onClickFig={abrirModal} />
-        )}
-        {aba === 'selecoes' && (
-          <Selecoes colecao={colecao} onClickFig={abrirModal} />
-        )}
-        {aba === 'retidas' && (
-          <Retidas colecao={colecao} onColar={handleColar} onClickFig={abrirModal} />
-        )}
+        {aba === 'painel'   && <Painel   colecao={colecao} onClique={handleClique} onTroca={handleTroca} />}
+        {aba === 'selecoes' && <Selecoes colecao={colecao} onClique={handleClique} />}
+        {aba === 'troca'    && <Troca    colecao={colecao} onTroca={handleTroca} />}
       </div>
 
-      <BottomNav aba={aba} colecao={colecao} onChange={setAba} />
+      <BottomNav aba={aba} onChange={setAba} />
 
-      {modalComFig && (
-        <FigModal
-          fig={modalComFig}
-          onAcao={handleAcao}
-          onFechar={() => setModal(null)}
+      {modalRemover && (
+        <ModalRemoverExtras
+          fig={modalRemover}
+          onConfirmar={handleConfirmarRemover}
+          onFechar={() => setModalRemover(null)}
         />
       )}
 

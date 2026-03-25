@@ -4,31 +4,32 @@ export function Header({ colecao }) {
   const { total, coletadas, pct } = calcularStats(colecao)
 
   return (
-    <header style={{
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 55%, #0f3460 100%)',
-      padding: '14px 16px 12px',
-      borderBottom: '2px solid var(--gold)',
-      flexShrink: 0
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+    <header className="app-header">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
         <div style={{
-          width: 38, height: 38, borderRadius: '50%',
+          width: 42, height: 42, borderRadius: '50%',
           background: 'var(--gold)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 20, flexShrink: 0
+          fontSize: 22, flexShrink: 0,
+          boxShadow: '0 2px 8px rgba(200,146,42,0.4)'
         }}>⚽</div>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 22, color: 'white', letterSpacing: '0.04em', lineHeight: 1
-          }}>ÁLBUM COPA DO MUNDO</div>
-          <div style={{ fontSize: 11, color: 'var(--gold-light)', marginTop: 2 }}>
-            {coletadas} de {total} figurinhas • {pct}% completo
+            fontSize: 24, color: '#fff',
+            letterSpacing: '0.05em', lineHeight: 1,
+          }}>ÁLBUM COPA</div>
+          <div style={{ fontSize: 12, color: 'var(--gold-light)', marginTop: 3, fontWeight: 500 }}>
+            {coletadas} de {total} figurinhas
           </div>
         </div>
+        <div style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 28, color: 'var(--gold-light)',
+          letterSpacing: '0.02em', lineHeight: 1
+        }}>{pct}%</div>
       </div>
 
-      {/* Barra de progresso geral */}
       <div className="progress">
         <div className="progress-fill" style={{ width: `${pct}%` }} />
       </div>

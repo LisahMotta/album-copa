@@ -1,37 +1,45 @@
+// Usamos texto "GB" como fallback para bandeiras que não renderizam bem em todos os sistemas
 export const SELECOES = [
-  { id: 'bra', nome: 'Brasil',      flag: '🇧🇷', grupo: 'A', cor: '#009c3b' },
-  { id: 'arg', nome: 'Argentina',   flag: '🇦🇷', grupo: 'A', cor: '#74acdf' },
-  { id: 'fra', nome: 'França',      flag: '🇫🇷', grupo: 'B', cor: '#002395' },
-  { id: 'eng', nome: 'Inglaterra',  flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', grupo: 'B', cor: '#cf081f' },
-  { id: 'esp', nome: 'Espanha',     flag: '🇪🇸', grupo: 'C', cor: '#c60b1e' },
-  { id: 'ger', nome: 'Alemanha',    flag: '🇩🇪', grupo: 'C', cor: '#000000' },
-  { id: 'por', nome: 'Portugal',    flag: '🇵🇹', grupo: 'D', cor: '#006600' },
-  { id: 'ned', nome: 'Holanda',     flag: '🇳🇱', grupo: 'D', cor: '#ff6600' },
-  { id: 'ita', nome: 'Itália',      flag: '🇮🇹', grupo: 'E', cor: '#0066cc' },
-  { id: 'uru', nome: 'Uruguai',     flag: '🇺🇾', grupo: 'E', cor: '#5aaad6' },
-  { id: 'mex', nome: 'México',      flag: '🇲🇽', grupo: 'F', cor: '#006847' },
-  { id: 'usa', nome: 'EUA',         flag: '🇺🇸', grupo: 'F', cor: '#b22234' },
-  { id: 'jap', nome: 'Japão',       flag: '🇯🇵', grupo: 'G', cor: '#bc002d' },
-  { id: 'mar', nome: 'Marrocos',    flag: '🇲🇦', grupo: 'G', cor: '#c1272d' },
-  { id: 'sen', nome: 'Senegal',     flag: '🇸🇳', grupo: 'H', cor: '#00853f' },
-  { id: 'aus', nome: 'Austrália',   flag: '🇦🇺', grupo: 'H', cor: '#ffcd00' },
-  { id: 'cro', nome: 'Croácia',     flag: '🇭🇷', grupo: 'A', cor: '#ff0000' },
-  { id: 'mor', nome: 'Marrocos',    flag: '🇲🇦', grupo: 'B', cor: '#c1272d' },
-  { id: 'sui', nome: 'Suíça',       flag: '🇨🇭', grupo: 'C', cor: '#ff0000' },
-  { id: 'cor', nome: 'Coreia do Sul',flag:'🇰🇷', grupo: 'D', cor: '#003478' },
-  { id: 'cam', nome: 'Camarões',    flag: '🇨🇲', grupo: 'E', cor: '#007a5e' },
-  { id: 'gan', nome: 'Gana',        flag: '🇬🇭', grupo: 'F', cor: '#006b3f' },
-  { id: 'pol', nome: 'Polônia',     flag: '🇵🇱', grupo: 'G', cor: '#dc143c' },
-  { id: 'tun', nome: 'Tunísia',     flag: '🇹🇳', grupo: 'H', cor: '#e70013' },
-  { id: 'ecu', nome: 'Equador',     flag: '🇪🇨', grupo: 'A', cor: '#ffdd00' },
-  { id: 'qat', nome: 'Catar',       flag: '🇶🇦', grupo: 'A', cor: '#8d1b3d' },
-  { id: 'ira', nome: 'Irã',         flag: '🇮🇷', grupo: 'B', cor: '#239f40' },
-  { id: 'wal', nome: 'País de Gales',flag:'🏴󠁧󠁢󠁷󠁬󠁳󠁿', grupo: 'B', cor: '#cf081f' },
-  { id: 'cos', nome: 'Costa Rica',  flag: '🇨🇷', grupo: 'E', cor: '#002b7f' },
-  { id: 'can', nome: 'Canadá',      flag: '🇨🇦', grupo: 'F', cor: '#ff0000' },
-  { id: 'bel', nome: 'Bélgica',     flag: '🇧🇪', grupo: 'F', cor: '#000000' },
-  { id: 'den', nome: 'Dinamarca',   flag: '🇩🇰', grupo: 'D', cor: '#c60c30' },
+  { id: 'bra', nome: 'Brasil',        flag: '🇧🇷', sigla: 'BRA', grupo: 'A' },
+  { id: 'arg', nome: 'Argentina',     flag: '🇦🇷', sigla: 'ARG', grupo: 'A' },
+  { id: 'fra', nome: 'França',        flag: '🇫🇷', sigla: 'FRA', grupo: 'B' },
+  { id: 'eng', nome: 'Inglaterra',    flag: null,   sigla: 'GB',  grupo: 'B' },
+  { id: 'esp', nome: 'Espanha',       flag: '🇪🇸', sigla: 'ESP', grupo: 'C' },
+  { id: 'ger', nome: 'Alemanha',      flag: '🇩🇪', sigla: 'GER', grupo: 'C' },
+  { id: 'por', nome: 'Portugal',      flag: '🇵🇹', sigla: 'POR', grupo: 'D' },
+  { id: 'ned', nome: 'Holanda',       flag: '🇳🇱', sigla: 'NED', grupo: 'D' },
+  { id: 'ita', nome: 'Itália',        flag: '🇮🇹', sigla: 'ITA', grupo: 'E' },
+  { id: 'uru', nome: 'Uruguai',       flag: '🇺🇾', sigla: 'URU', grupo: 'E' },
+  { id: 'mex', nome: 'México',        flag: '🇲🇽', sigla: 'MEX', grupo: 'F' },
+  { id: 'usa', nome: 'EUA',           flag: '🇺🇸', sigla: 'USA', grupo: 'F' },
+  { id: 'jap', nome: 'Japão',         flag: '🇯🇵', sigla: 'JPN', grupo: 'G' },
+  { id: 'mar', nome: 'Marrocos',      flag: '🇲🇦', sigla: 'MAR', grupo: 'G' },
+  { id: 'sen', nome: 'Senegal',       flag: '🇸🇳', sigla: 'SEN', grupo: 'H' },
+  { id: 'aus', nome: 'Austrália',     flag: '🇦🇺', sigla: 'AUS', grupo: 'H' },
+  { id: 'cro', nome: 'Croácia',       flag: '🇭🇷', sigla: 'CRO', grupo: 'A' },
+  { id: 'sui', nome: 'Suíça',         flag: '🇨🇭', sigla: 'SUI', grupo: 'C' },
+  { id: 'cor', nome: 'Coreia do Sul', flag: '🇰🇷', sigla: 'KOR', grupo: 'D' },
+  { id: 'cam', nome: 'Camarões',      flag: '🇨🇲', sigla: 'CMR', grupo: 'E' },
+  { id: 'gan', nome: 'Gana',          flag: '🇬🇭', sigla: 'GHA', grupo: 'F' },
+  { id: 'pol', nome: 'Polônia',       flag: '🇵🇱', sigla: 'POL', grupo: 'G' },
+  { id: 'tun', nome: 'Tunísia',       flag: '🇹🇳', sigla: 'TUN', grupo: 'H' },
+  { id: 'ecu', nome: 'Equador',       flag: '🇪🇨', sigla: 'ECU', grupo: 'A' },
+  { id: 'qat', nome: 'Catar',         flag: '🇶🇦', sigla: 'QAT', grupo: 'A' },
+  { id: 'ira', nome: 'Irã',           flag: '🇮🇷', sigla: 'IRN', grupo: 'B' },
+  { id: 'wal', nome: 'País de Gales', flag: null,   sigla: 'GB',  grupo: 'B' },
+  { id: 'cos', nome: 'Costa Rica',    flag: '🇨🇷', sigla: 'CRC', grupo: 'E' },
+  { id: 'can', nome: 'Canadá',        flag: '🇨🇦', sigla: 'CAN', grupo: 'F' },
+  { id: 'bel', nome: 'Bélgica',       flag: '🇧🇪', sigla: 'BEL', grupo: 'F' },
+  { id: 'den', nome: 'Dinamarca',     flag: '🇩🇰', sigla: 'DEN', grupo: 'D' },
+  { id: 'ser', nome: 'Sérvia',        flag: '🇷🇸', sigla: 'SRB', grupo: 'G' },
 ]
+
+// Renderiza flag ou sigla como fallback
+export function renderFlag(sel, size = 26) {
+  if (sel.flag) return sel.flag
+  // fallback: badge com a sigla
+  return sel.sigla
+}
 
 export const POSICOES = [
   'Escudo',
@@ -47,7 +55,7 @@ export const POSICOES = [
   'Reserva 1', 'Reserva 2',
 ]
 
-export const TOTAL_POR_SELECAO = POSICOES.length // 20
+export const TOTAL_POR_SELECAO = POSICOES.length
 
 export function gerarChave(selId, pos) {
   return `${selId}_${pos}`
@@ -57,28 +65,22 @@ export function carregarColecao() {
   try {
     const raw = localStorage.getItem('album_copa_v2')
     return raw ? JSON.parse(raw) : null
-  } catch {
-    return null
-  }
+  } catch { return null }
 }
 
 export function salvarColecao(colecao) {
   try {
     localStorage.setItem('album_copa_v2', JSON.stringify(colecao))
-  } catch (e) {
-    console.warn('Erro ao salvar:', e)
-  }
+  } catch (e) { console.warn('Erro ao salvar:', e) }
 }
 
 export function iniciarColecao() {
   const existente = carregarColecao()
   if (existente) return existente
-
   const col = {}
   SELECOES.forEach(sel => {
     POSICOES.forEach((_, i) => {
-      const key = gerarChave(sel.id, i + 1)
-      col[key] = { status: 'falta', qtd: 0 }
+      col[gerarChave(sel.id, i + 1)] = { status: 'falta', qtd: 0 }
     })
   })
   return col
@@ -86,46 +88,52 @@ export function iniciarColecao() {
 
 export function calcularStats(colecao) {
   const total = SELECOES.length * TOTAL_POR_SELECAO
-  let coletadas = 0, repetidas = 0, retidas = 0
-
+  let coletadas = 0, repetidas = 0
   Object.values(colecao).forEach(f => {
     if (f.status === 'coletada') coletadas++
-    if (f.status === 'repetida') { coletadas++; repetidas++ }
-    if (f.status === 'retida') retidas++
+    if (f.status === 'repetida') {
+      coletadas++
+      repetidas += (f.qtd || 2) - 1
+    }
   })
-
-  return {
-    total,
-    coletadas,
-    repetidas,
-    retidas,
-    faltam: total - coletadas,
-    pct: Math.round((coletadas / total) * 100)
-  }
+  return { total, coletadas, repetidas, faltam: total - coletadas, pct: Math.round((coletadas / total) * 100) }
 }
 
 export function calcularStatsSelecao(colecao, selId) {
   const total = TOTAL_POR_SELECAO
   let coletadas = 0, repetidas = 0
-
   POSICOES.forEach((_, i) => {
-    const key = gerarChave(selId, i + 1)
-    const f = colecao[key]
+    const f = colecao[gerarChave(selId, i + 1)]
     if (f?.status === 'coletada') coletadas++
-    if (f?.status === 'repetida') { coletadas++; repetidas++ }
+    if (f?.status === 'repetida') { coletadas++; repetidas += (f.qtd || 2) - 1 }
   })
-
   return { total, coletadas, repetidas, pct: Math.round((coletadas / total) * 100) }
 }
 
-export function getRetidas(colecao) {
+// Faltantes agrupadas por seleção
+export function getFaltantesPorSelecao(colecao) {
+  return SELECOES.map(sel => {
+    const faltantes = []
+    POSICOES.forEach((pos, i) => {
+      const key = gerarChave(sel.id, i + 1)
+      const f = colecao[key]
+      if (!f || f.status === 'falta') {
+        faltantes.push({ key, posicao: pos, num: i + 1 })
+      }
+    })
+    return { selecao: sel, faltantes }
+  }).filter(g => g.faltantes.length > 0)
+}
+
+// Todas as repetidas disponíveis para troca
+export function getRepetidas(colecao) {
   const lista = []
   SELECOES.forEach(sel => {
     POSICOES.forEach((pos, i) => {
       const key = gerarChave(sel.id, i + 1)
       const f = colecao[key]
-      if (f?.status === 'retida') {
-        lista.push({ key, selecao: sel, posicao: pos, num: i + 1 })
+      if (f?.status === 'repetida') {
+        lista.push({ key, selecao: sel, posicao: pos, num: i + 1, qtdExtra: (f.qtd || 2) - 1 })
       }
     })
   })

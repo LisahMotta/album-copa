@@ -1,39 +1,58 @@
 import { FlagBadge } from './FlagBadge'
 
-const MAX_QTD = 5  // máximo total (1 no álbum + 4 extras)
+const MAX_QTD = 5
 
-export function Figurinha({ selecao, pos, figurinha, onClick, mostrarFlag = false }) {
+export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostrarFlag = false, temAnotacao = false }) {
   const { status, qtd } = figurinha
   const extras = status === 'repetida' ? (qtd || 2) - 1 : 0
   const noMax = status === 'repetida' && (qtd || 2) >= MAX_QTD
 
+  function handleClick(e) {
+    onClick?.()
+  }
+
+  function handleContextMenu(e) {
+    e.preventDefault()
+    onLongPress?.()
+  }
+
+  // Long press para mobile
+  let pressTimer = null
+  function handleTouchStart() {
+    pressTimer = setTimeout(() => { onLongPress?.() }, 500)
+  }
+  function handleTouchEnd() {
+    clearTimeout(pressTimer)
+  }
+
   return (
     <div
       className={`fig-card ${status !== 'falta' ? status : ''}`}
-      onClick={onClick}
+      onClick={handleClick}
+      onContextMenu={handleContextMenu}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       role="button"
       aria-label={`Figurinha ${pos}`}
     >
-      {/* Badge de extras — verde normal, vermelho no máximo */}
+      {/* Badge extras */}
       {status === 'repetida' && (
-        <div className="qtd-badge" style={{ background: noMax ? 'var(--red)' : 'var(--green)' }}>
+        <div className="badge-qtd" style={{ background: noMax ? 'var(--red)' : 'var(--green)' }}>
           {extras}
         </div>
       )}
 
       {/* Check */}
       {(status === 'coletada' || status === 'repetida') && (
-        <div className="badge">✓</div>
+        <div className="badge-check">✓</div>
       )}
 
-      {/* Flag ou sigla GB */}
-      {mostrarFlag && (
-        selecao.flag
-          ? <span style={{ fontSize: 18, lineHeight: 1 }}>{selecao.flag}</span>
-          : <span style={{ fontSize: 9, fontWeight: 700, color: '#fff', background: '#012169', borderRadius: 3, padding: '1px 3px', lineHeight: 1.4 }}>
-              {selecao.sigla}
-            </span>
-      )}
+      {/* Indicador de anotação */}
+      {temAnotacao && <div className="badge-nota" />}
+
+      {/* Flag ou sigla */}
+      {mostrarFlag && <FlagBadge sel={selecao} size={18} />}
 
       <span style={{ fontSize: 9, color: 'var(--text-muted)', marginTop: 2 }}>#{pos}</span>
     </div>

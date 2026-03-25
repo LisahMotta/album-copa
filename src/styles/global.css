@@ -481,3 +481,47 @@ body {
 .empty-state .icon { font-size: 48px; line-height: 1; }
 .empty-state .title { font-size: 16px; font-weight: 600; color: var(--text); }
 .empty-state .sub   { font-size: 13px; text-align: center; line-height: 1.6; }
+
+/* ─── Dark Mode ──────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg:       #0f172a;
+  --bg-card:  #1e293b;
+  --text:     #f1f5f9;
+  --text-muted: #94a3b8;
+  --border:   #334155;
+  --gold-pale: #292011;
+  --green-pale: #0f2318;
+  --red-pale:  #2a1010;
+}
+
+[data-theme="dark"] .app-header { background: #020617; }
+[data-theme="dark"] .bottom-nav { background: #020617; }
+[data-theme="dark"] .fig-card.coletada { background: linear-gradient(160deg, #292011 0%, #3d2e0a 100%); }
+[data-theme="dark"] .fig-card.repetida { background: linear-gradient(160deg, #0f2318 0%, #14341f 100%); }
+[data-theme="dark"] .selecao-card:active { border-color: var(--gold); }
+[data-theme="dark"] .chip.active { background: #1e293b; border-color: var(--gold); color: var(--gold-light); }
+
+/* ─── Bandeira grande no início de cada seleção (padrão Panini) ── */
+.selecao-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--dark);
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: 0;
+}
+
+.selecao-banner .flag-grande { font-size: 32px; line-height: 1; }
+.selecao-banner .nome { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.05em; }
+.selecao-banner .grupo { font-size: 11px; color: var(--gold-light); }
+
+/* ─── Figurinha com indicador de anotação ────────────────── */
+.fig-card .badge-nota {
+  position: absolute;
+  bottom: 3px; right: 3px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #60a5fa;
+}

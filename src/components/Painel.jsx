@@ -8,15 +8,11 @@ const FILTROS = [
   { id: 'repetidas', label: 'Extras' },
 ]
 
-export function Painel({ colecao, onClique }) {
+export function Painel({ colecao, onClique, onLongPress, anotacoes }) {
   const [filtro, setFiltro] = useState('todas')
   const { faltam, repetidas: qtdExtras } = calcularStats(colecao)
 
-  const labels = {
-    todas:     'Todas',
-    faltam:    `Faltam (${faltam})`,
-    repetidas: `Extras (${qtdExtras})`,
-  }
+  const labels = { todas: 'Todas', faltam: `Faltam (${faltam})`, repetidas: `Extras (${qtdExtras})` }
 
   const lista = []
   SELECOES.forEach(sel => {
@@ -32,7 +28,6 @@ export function Painel({ colecao, onClique }) {
 
   return (
     <div className="scroll-area">
-      {/* Filtros */}
       <div className="filters">
         {FILTROS.map(f => (
           <button key={f.id} className={`chip ${filtro === f.id ? 'active' : ''}`} onClick={() => setFiltro(f.id)}>
@@ -41,24 +36,22 @@ export function Painel({ colecao, onClique }) {
         ))}
       </div>
 
-      <p className="hint">
-        {filtro === 'repetidas'
-          ? 'Toque para +1 extra · toque no vermelho para remover'
-          : 'Toque para coletar · toque novamente para marcar extra'}
-      </p>
+      <p className="hint">Toque para coletar · segure para anotar</p>
 
       {lista.length === 0 ? (
         <div className="empty-state">
           <div className="icon">🎉</div>
           <div className="title">Nenhuma figurinha aqui</div>
-          <div className="sub">Você não tem figurinhas nessa categoria no momento.</div>
+          <div className="sub">Você não tem figurinhas nessa categoria.</div>
         </div>
       ) : (
         <div className="fig-grid">
           {lista.map(({ sel, pos, key, fig }) => (
             <Figurinha
               key={key} selecao={sel} pos={pos} figurinha={fig} mostrarFlag
+              temAnotacao={!!(anotacoes && anotacoes[key])}
               onClick={() => onClique(sel.id, pos)}
+              onLongPress={() => onLongPress?.(sel.id, pos, key)}
             />
           ))}
         </div>

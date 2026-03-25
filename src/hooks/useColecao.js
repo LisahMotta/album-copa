@@ -80,5 +80,13 @@ export function useColecao() {
     return colecao[gerarChave(selId, pos)] || { status: 'falta', qtd: 0 }
   }, [colecao])
 
-  return { colecao, clicarFigurinha, removerExtras, remover, realizarTroca, getFigurinha }
+  const importarColecao = useCallback((novaColecao) => {
+    setColecao(novaColecao)
+    salvarColecao(novaColecao)
+  }, [])
+
+  return { colecao, clicarFigurinha, removerExtras, remover, realizarTroca, getFigurinha, importarColecao }
 }
+
+// Exportado separadamente para uso no App
+export { MAX_QTD }

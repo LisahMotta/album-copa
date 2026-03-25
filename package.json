@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "serve": "vite preview --port $PORT --host",
-    "gerar-icones": "node gerar-icones.mjs"
+    "serve": "vite preview --port $PORT --host"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -17,7 +16,6 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.1.0",
-    "vite-plugin-pwa": "^0.19.0",
-    "canvas": "^2.11.2"
+    "vite-plugin-pwa": "^0.19.0"
   }
 }

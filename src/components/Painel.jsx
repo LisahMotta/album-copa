@@ -12,7 +12,7 @@ const FILTROS = [
   { id: 'raras',     label: '✨ Raras' },
 ]
 
-export function Painel({ colecao, onClique, onLongPress, anotacoes, historico }) {
+export function Painel({ colecao, onClique, onRemover, onLongPress, anotacoes, historico }) {
   const [filtro, setFiltro] = useState('todas')
   const [modoLista, setModoLista] = useState(false)
   const [secao, setSecao] = useState('album')   // 'album' | 'grupos' | 'conquistas'

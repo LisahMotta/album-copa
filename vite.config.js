@@ -7,8 +7,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      devOptions: { enabled: true },
-      includeAssets: ['icon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png'],
+      devOptions: { enabled: false },
+      includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'],
       manifest: {
         name: 'Álbum Copa do Mundo',
         short_name: 'Álbum Copa',
@@ -22,12 +22,6 @@ export default defineConfig({
         lang: 'pt-BR',
         icons: [
           {
-            src: 'icon.svg',
-            sizes: 'any',
-            type: 'image/svg+xml',
-            purpose: 'any'
-          },
-          {
             src: 'icon-192.png',
             sizes: '192x192',
             type: 'image/png',
@@ -37,7 +31,13 @@ export default defineConfig({
             src: 'icon-512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable'
+            purpose: 'any'
+          },
+          {
+            src: 'icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
           }
         ]
       },

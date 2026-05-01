@@ -69,10 +69,24 @@ export function Especiais({ colecao, onClique, onLongPress, anotacoes }) {
                   key={esp.id}
                   onClick={() => onClique(key, fig)}
                   onContextMenu={e => { e.preventDefault(); onLongPress?.(key) }}
-                  onTouchStart={() => {
-                    const t = setTimeout(() => onLongPress?.(key), 500)
-                    const clear = () => clearTimeout(t)
-                    document.addEventListener('touchend', clear, { once: true })
+                  onTouchStart={(e) => {
+                    const startY = e.touches[0].clientY
+                    const startX = e.touches[0].clientX
+                    let moved = false
+                    const timer = setTimeout(() => { if (!moved) onLongPress?.(key) }, 500)
+                    const onMove = (ev) => {
+                      if (Math.abs(ev.touches[0].clientY - startY) > 8 ||
+                          Math.abs(ev.touches[0].clientX - startX) > 8) {
+                        moved = true; clearTimeout(timer)
+                      }
+                    }
+                    const onEnd = () => {
+                      clearTimeout(timer)
+                      document.removeEventListener('touchmove', onMove)
+                      document.removeEventListener('touchend', onEnd)
+                    }
+                    document.addEventListener('touchmove', onMove, { passive: true })
+                    document.addEventListener('touchend', onEnd, { once: true })
                   }}
                   style={{
                     borderRadius: 10, border: `2px solid ${

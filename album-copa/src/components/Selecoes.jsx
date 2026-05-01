@@ -3,7 +3,7 @@ import { SELECOES, POSICOES, calcularStatsSelecao } from '../data/dados'
 import { Figurinha } from './Figurinha'
 import { FlagBadge } from './FlagBadge'
 
-export function Selecoes({ colecao, onClique, onLongPress, anotacoes }) {
+export function Selecoes({ colecao, onClique, onRemover, onLongPress, anotacoes }) {
   const [detalhe, setDetalhe] = useState(null)
 
   if (detalhe) {
@@ -72,6 +72,7 @@ export function Selecoes({ colecao, onClique, onLongPress, anotacoes }) {
                   selecao={sel} pos={pos} figurinha={fig}
                   temAnotacao={temNota}
                   onClick={() => onClique(sel.id, pos)}
+                  onRemover={fig.status !== 'falta' ? () => onRemover?.(sel.id, pos) : undefined}
                   onLongPress={() => onLongPress?.(sel.id, pos, key)}
                 />
                 <div style={{ fontSize: 9, color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.2, maxWidth: 58 }}>

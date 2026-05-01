@@ -79,6 +79,17 @@ export default function App() {
     }
   }, [getFigurinha, clicarFigurinha])
 
+  // Remover figurinha diretamente (botão X)
+  const handleRemover = useCallback((selId, pos) => {
+    const fig = getFigurinha(selId, pos)
+    if (fig.status === 'repetida') {
+      setModalRemover({ selId, pos, qtd: fig.qtd })
+    } else {
+      remover(selId, pos)
+      showToast('Figurinha removida ✕')
+    }
+  }, [getFigurinha, remover])
+
   // Clique em figurinha especial
   const handleCliqueEspecial = useCallback((key, fig) => {
     if (fig.status === 'repetida' && (fig.qtd || 2) >= MAX_QTD) {
@@ -162,8 +173,8 @@ export default function App() {
       <StatsBar stats={statsCompletas} />
 
       <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        {aba === 'painel'    && <Painel    colecao={colecao} onClique={handleClique} onLongPress={handleLongPress} anotacoes={anotacoes} historico={historico} />}
-        {aba === 'selecoes'  && <Selecoes  colecao={colecao} onClique={handleClique} onLongPress={handleLongPress} anotacoes={anotacoes} />}
+        {aba === 'painel'    && <Painel    colecao={colecao} onClique={handleClique} onRemover={handleRemover} onLongPress={handleLongPress} anotacoes={anotacoes} historico={historico} />}
+        {aba === 'selecoes'  && <Selecoes  colecao={colecao} onClique={handleClique} onRemover={handleRemover} onLongPress={handleLongPress} anotacoes={anotacoes} />}
         {aba === 'especiais' && <Especiais colecao={colecao} onClique={handleCliqueEspecial} onLongPress={handleLongPressEspecial} anotacoes={anotacoes} />}
         {aba === 'troca'     && <Troca     colecao={colecao} onTroca={handleTroca} />}
         {aba === 'config'    && (

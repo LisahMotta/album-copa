@@ -2,21 +2,20 @@ import { useRef } from 'react'
 import { FlagBadge } from './FlagBadge'
 
 const MAX_QTD = 5
-const MOVE_THRESHOLD = 8   // pixels — se mover mais que isso, é scroll
-const LONG_PRESS_MS  = 500 // ms para long press
+const MOVE_THRESHOLD = 8
+const LONG_PRESS_MS  = 500
 
-export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostrarFlag = false, temAnotacao = false, eRara = false }) {
+export function Figurinha({ selecao, pos, figurinha, onClick, onRemover, onLongPress, mostrarFlag = false, temAnotacao = false, eRara = false }) {
   const { status, qtd } = figurinha
   const extras  = status === 'repetida' ? (qtd || 2) - 1 : 0
   const noMax   = status === 'repetida' && (qtd || 2) >= MAX_QTD
   const eEscudo = pos === 1
 
-  // Refs para controle de toque
-  const startX      = useRef(0)
-  const startY      = useRef(0)
-  const longTimer   = useRef(null)
+  const startX       = useRef(0)
+  const startY       = useRef(0)
+  const longTimer    = useRef(null)
   const didLongPress = useRef(false)
-  const didMove     = useRef(false)
+  const didMove      = useRef(false)
 
   function onTouchStart(e) {
     const t = e.touches[0]
@@ -24,7 +23,6 @@ export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostr
     startY.current = t.clientY
     didMove.current = false
     didLongPress.current = false
-
     longTimer.current = setTimeout(() => {
       if (!didMove.current) {
         didLongPress.current = true
@@ -45,9 +43,8 @@ export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostr
 
   function onTouchEnd(e) {
     clearTimeout(longTimer.current)
-    // Só executa onClick se não houve movimento e não foi long press
     if (!didMove.current && !didLongPress.current) {
-      e.preventDefault() // evita o click sintético do browser
+      e.preventDefault()
       onClick?.()
     }
   }
@@ -57,7 +54,6 @@ export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostr
     didMove.current = true
   }
 
-  // Classe base do card
   let classCard = 'fig-card'
   if      (eRara   && status === 'coletada') classCard += ' rara-coletada'
   else if (eRara   && status === 'falta')    classCard += ' rara-vazia'
@@ -72,23 +68,34 @@ export function Figurinha({ selecao, pos, figurinha, onClick, onLongPress, mostr
       onTouchEnd={onTouchEnd}
       onTouchCancel={onTouchCancel}
       onContextMenu={e => { e.preventDefault(); onLongPress?.() }}
-      onClick={() => onClick?.()}   // mantém para mouse (desktop)
+      onClick={() => onClick?.()}
       role="button"
       aria-label={`Figurinha ${pos}`}
-      style={{ touchAction: 'pan-y' }}  // permite scroll vertical nativo
+      style={{ touchAction: 'pan-y' }}
     >
+      {/* Badge de extras */}
       {status === 'repetida' && (
         <div className="badge-qtd" style={{ background: noMax ? 'var(--red)' : 'var(--green)' }}>
           {extras}
         </div>
       )}
 
+      {/* ✓ check — toque longo para remover */}
       {(status === 'coletada' || status === 'repetida') && (
         <div className="badge-check">✓</div>
       )}
 
-      {eRara && <div className="badge-rara">✨</div>}
+      {/* Botão X para remover — aparece só em coletada/repetida */}
+      {onRemover && status !== 'falta' && (
+        <div
+          className="badge-remover"
+          onClick={e => { e.stopPropagation(); onRemover() }}
+          onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); onRemover() }}
+          title="Remover"
+        >✕</div>
+      )}
 
+      {eRara && <div className="badge-rara">✨</div>}
       {temAnotacao && <div className="badge-nota" />}
 
       {eEscudo ? (

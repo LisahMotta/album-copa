@@ -569,3 +569,30 @@ body {
   touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
 }
+
+/* ─── Botão X para remover figurinha ────────────────────── */
+.fig-card .badge-remover {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  line-height: 1;
+  opacity: 0.85;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.fig-card .badge-remover:active {
+  transform: scale(1.2);
+  opacity: 1;
+}

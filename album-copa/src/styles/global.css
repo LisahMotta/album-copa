@@ -1,0 +1,561 @@
+/* ─── Tokens ─────────────────────────────────────────── */
+:root {
+  --gold:        #c8922a;
+  --gold-light:  #e8b84b;
+  --gold-pale:   #fef7e8;
+  --dark:        #111827;
+  --dark-nav:    #0f172a;
+  --green:       #22a05a;
+  --green-pale:  #ecfdf3;
+  --red:         #dc2626;
+  --red-pale:    #fef2f2;
+  --bg:          #f8f7f4;
+  --bg-card:     #ffffff;
+  --text:        #111827;
+  --text-muted:  #6b7280;
+  --border:      #e5e7eb;
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   18px;
+  --font-display:'Bebas Neue', sans-serif;
+  --font-body:   'DM Sans', sans-serif;
+  --nav-h:       64px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top:    env(safe-area-inset-top, 0px);
+}
+
+/* ─── Reset ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  /* Evita zoom acidental em inputs no iOS */
+  touch-action: manipulation;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;   /* dvh respeita barra de endereço mobile */
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  position: relative;
+}
+
+/* Scrollbar discreta */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ─── Animações ──────────────────────────────────────── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  0%   { transform: scale(0.92); opacity: 0.6; }
+  60%  { transform: scale(1.06); }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Header ─────────────────────────────────────────── */
+.app-header {
+  background: var(--dark);
+  padding: calc(var(--safe-top) + 14px) 16px 14px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Detalhe decorativo no header */
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: rgba(200,146,42,0.08);
+  pointer-events: none;
+}
+
+.app-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, transparent 100%);
+}
+
+/* ─── Stats bar ──────────────────────────────────────── */
+.stats-bar {
+  display: flex;
+  gap: 6px;
+  padding: 10px 14px;
+  overflow-x: auto;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.stats-bar::-webkit-scrollbar { display: none; }
+
+.stat-pill {
+  flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  white-space: nowrap;
+}
+
+.stat-pill .num {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-pill .lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.stat-pill.gold  { border-color: var(--gold);  background: var(--gold-pale); }
+.stat-pill.gold .num  { color: #92640a; }
+.stat-pill.green { border-color: var(--green); background: var(--green-pale); }
+.stat-pill.green .num { color: #166534; }
+.stat-pill.red   { border-color: var(--red);   background: var(--red-pale); }
+.stat-pill.red .num   { color: #991b1b; }
+
+/* ─── Filtros / chips ────────────────────────────────── */
+.filters {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  overflow-x: auto;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.filters::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 36px;
+}
+
+.chip.active {
+  background: var(--dark);
+  color: #fff;
+  border-color: var(--dark);
+}
+
+/* ─── Grid de figurinhas ─────────────────────────────── */
+.fig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+  gap: 7px;
+  padding: 12px 12px 100px;  /* 100px para não ficar atrás do nav */
+}
+
+/* ─── Card figurinha ─────────────────────────────────── */
+.fig-card {
+  aspect-ratio: 2/3;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-card);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s;
+  /* Área mínima de toque confortável */
+  min-height: 72px;
+}
+
+.fig-card:active { transform: scale(0.91); }
+
+.fig-card.coletada {
+  border-color: var(--gold);
+  background: linear-gradient(160deg, #fffdf5 0%, #fef3c7 100%);
+}
+
+.fig-card.repetida {
+  border-color: var(--green);
+  background: linear-gradient(160deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+/* Badge ✓ canto superior direito */
+.fig-card .badge-check {
+  position: absolute;
+  top: 3px; right: 3px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  font-size: 9px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700;
+  line-height: 1;
+}
+.fig-card.coletada .badge-check { background: var(--gold); }
+.fig-card.repetida .badge-check { background: var(--green); }
+
+/* Badge qtd extras — canto superior esquerdo */
+.fig-card .badge-qtd {
+  position: absolute;
+  top: 3px; left: 3px;
+  min-width: 15px; height: 15px;
+  border-radius: 8px;
+  padding: 0 3px;
+  font-size: 9px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; line-height: 1;
+}
+
+/* ─── Bottom nav ─────────────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: calc(var(--nav-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: var(--dark-nav);
+  display: flex;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  z-index: 50;
+}
+
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.38);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0;
+  min-height: 44px;
+}
+
+.nav-btn.active { color: var(--gold-light); }
+
+.nav-btn svg {
+  width: 22px; height: 22px;
+  transition: transform 0.15s;
+}
+
+.nav-btn.active svg { transform: scale(1.1); }
+
+/* Indicador ativo */
+.nav-btn.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 32px; height: 2px;
+  background: var(--gold);
+  border-radius: 0 0 2px 2px;
+}
+
+/* ─── Progress bar ───────────────────────────────────── */
+.progress {
+  height: 6px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+  transition: width 0.5s ease;
+}
+
+.progress-fill.full {
+  background: linear-gradient(90deg, var(--green) 0%, #4ade80 100%);
+}
+
+/* Progress dentro de cards de seleção */
+.progress-card {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-card-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--gold);
+  transition: width 0.4s ease;
+}
+
+.progress-card-fill.full { background: var(--green); }
+
+/* ─── Modal bottom sheet ─────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: flex-end;
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+  /* Padding lateral para não encostar nas bordas */
+  padding: 0;
+}
+
+.modal-sheet {
+  background: var(--bg-card);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 20px calc(20px + var(--safe-bottom));
+  width: 100%;
+  animation: slideUp 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
+  max-height: 85dvh;
+  overflow-y: auto;
+}
+
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0 auto 18px;
+}
+
+/* ─── Toast ──────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: var(--dark);
+  color: #fff;
+  padding: 9px 20px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 200;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+
+.toast.hide {
+  opacity: 0;
+  transform: translateX(-50%) translateY(6px);
+}
+
+/* ─── Botões de ação (modal) ─────────────────────────── */
+.btn {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.12s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 50px;   /* área de toque generosa */
+}
+
+.btn:active { transform: scale(0.98); background: var(--border); }
+
+.btn.primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+}
+
+.btn.primary:active { background: #a87420; }
+
+.btn.danger {
+  border-color: var(--red);
+  color: var(--red);
+  background: var(--red-pale);
+}
+
+.btn.ghost {
+  color: var(--text-muted);
+  font-size: 14px;
+  border-color: transparent;
+  background: none;
+}
+
+/* ─── Cards de seleção ───────────────────────────────── */
+.selecao-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.selecao-card:active { transform: scale(0.98); border-color: var(--gold); }
+
+/* ─── Dica de instrução ──────────────────────────────── */
+.hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 8px 14px 4px;
+  text-align: center;
+}
+
+/* ─── Scroll principal (área de conteúdo) ────────────── */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─── Placeholder vazio ──────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  gap: 10px;
+  color: var(--text-muted);
+}
+
+.empty-state .icon { font-size: 48px; line-height: 1; }
+.empty-state .title { font-size: 16px; font-weight: 600; color: var(--text); }
+.empty-state .sub   { font-size: 13px; text-align: center; line-height: 1.6; }
+
+/* ─── Dark Mode ──────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg:       #0f172a;
+  --bg-card:  #1e293b;
+  --text:     #f1f5f9;
+  --text-muted: #94a3b8;
+  --border:   #334155;
+  --gold-pale: #292011;
+  --green-pale: #0f2318;
+  --red-pale:  #2a1010;
+}
+
+[data-theme="dark"] .app-header { background: #020617; }
+[data-theme="dark"] .bottom-nav { background: #020617; }
+[data-theme="dark"] .fig-card.coletada { background: linear-gradient(160deg, #292011 0%, #3d2e0a 100%); }
+[data-theme="dark"] .fig-card.repetida { background: linear-gradient(160deg, #0f2318 0%, #14341f 100%); }
+[data-theme="dark"] .selecao-card:active { border-color: var(--gold); }
+[data-theme="dark"] .chip.active { background: #1e293b; border-color: var(--gold); color: var(--gold-light); }
+
+/* ─── Bandeira grande no início de cada seleção (padrão Panini) ── */
+.selecao-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--dark);
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: 0;
+}
+
+.selecao-banner .flag-grande { font-size: 32px; line-height: 1; }
+.selecao-banner .nome { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.05em; }
+.selecao-banner .grupo { font-size: 11px; color: var(--gold-light); }
+
+/* ─── Figurinha com indicador de anotação ────────────────── */
+.fig-card .badge-nota {
+  position: absolute;
+  bottom: 3px; right: 3px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #60a5fa;
+}
+
+/* ─── Figurinha especial: Escudo ─────────────────────────── */
+.fig-card.escudo-vazio {
+  border-color: var(--gold);
+  border-style: dashed;
+  background: linear-gradient(160deg, #fffdf5 0%, #fef9e7 100%);
+}
+
+[data-theme="dark"] .fig-card.escudo-vazio {
+  background: linear-gradient(160deg, #1a1505 0%, #241d07 100%);
+}
+
+/* ─── Figurinha rara / brilhante ─────────────────────────── */
+.fig-card.rara-vazia {
+  border-color: #7c3aed;
+  border-style: dashed;
+  background: linear-gradient(160deg, #faf5ff 0%, #ede9fe 100%);
+}
+
+.fig-card.rara-coletada {
+  border-color: #7c3aed;
+  border-width: 2px;
+  background: linear-gradient(160deg, #faf5ff 0%, #ddd6fe 100%);
+  box-shadow: 0 0 0 1px rgba(124,58,237,0.2), inset 0 0 12px rgba(124,58,237,0.08);
+}
+
+[data-theme="dark"] .fig-card.rara-vazia   { background: linear-gradient(160deg, #1e1030 0%, #2d1b5e 100%); }
+[data-theme="dark"] .fig-card.rara-coletada { background: linear-gradient(160deg, #1e1030 0%, #3b1f7a 100%); }
+
+.fig-card .badge-rara {
+  position: absolute;
+  bottom: 3px; left: 3px;
+  font-size: 9px; line-height: 1;
+}

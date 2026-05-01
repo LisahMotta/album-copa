@@ -308,12 +308,28 @@ export function iniciarColecaoCompleta() {
     const raw = localStorage.getItem('album_copa_v2')
     if (raw) {
       const existente = JSON.parse(raw)
-      // Adicionar especiais que ainda não existem
       let atualizado = false
+
+      // Adicionar SELEÇÕES que ainda não existem na coleção salva
+      SELECOES.forEach(sel => {
+        POSICOES.forEach((_, i) => {
+          const key = gerarChave(sel.id, i + 1)
+          if (!existente[key]) {
+            existente[key] = { status: 'falta', qtd: 0 }
+            atualizado = true
+          }
+        })
+      })
+
+      // Adicionar ESPECIAIS que ainda não existem
       ESPECIAIS.forEach(esp => {
         const key = gerarChaveEspecial(esp.id)
-        if (!existente[key]) { existente[key] = { status: 'falta', qtd: 0 }; atualizado = true }
+        if (!existente[key]) {
+          existente[key] = { status: 'falta', qtd: 0 }
+          atualizado = true
+        }
       })
+
       if (atualizado) salvarColecao(existente)
       return existente
     }

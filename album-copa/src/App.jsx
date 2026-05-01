@@ -8,6 +8,7 @@ import { Troca } from './components/Troca'
 import { Especiais } from './components/Especiais'
 import { ModalRemoverExtras } from './components/ModalRemoverExtras'
 import { ModalAnotacao } from './components/ModalAnotacao'
+import { ModalOpcoes } from './components/ModalOpcoes'
 import { Scanner } from './components/Scanner'
 import { GerarImagem } from './components/GerarImagem'
 import { PainelConfig } from './components/Extras'
@@ -29,12 +30,13 @@ export default function App() {
   const [aba, setAba] = useState('painel')
   const [modalRemover,   setModalRemover]   = useState(null)
   const [modalAnotacao,  setModalAnotacao]  = useState(null)
+  const [modalOpcoes,    setModalOpcoes]    = useState(null)
   const [modalScanner,   setModalScanner]   = useState(false)
   const [modalImagem,    setModalImagem]    = useState(false)
   const [confirmarZerar, setConfirmarZerar] = useState(false)
   const [conquistasAntes, setConquistasAntes] = useState([])
 
-  const { colecao, clicarFigurinha, removerExtras, realizarTroca, getFigurinha, importarColecao, clicarEspecial } = useColecao()
+  const { colecao, clicarFigurinha, removerExtras, remover, realizarTroca, getFigurinha, importarColecao, clicarEspecial } = useColecao()
   const { historico, registrar, limpar: limparHistorico } = useHistorico()
   const { anotacoes, salvarAnotacao, getAnotacao } = useAnotacoes()
   const { darkMode, toggleTema } = useTema()
@@ -90,8 +92,19 @@ export default function App() {
   }, [clicarEspecial])
 
   const handleLongPress = useCallback((selId, pos, key) => {
-    setModalAnotacao({ selId, pos, key })
-  }, [])
+    const fig = getFigurinha(selId, pos)
+    setModalOpcoes({ selId, pos, key, fig })
+  }, [getFigurinha])
+
+  const handleRemoverDireto = useCallback((selId, pos, fig) => {
+    setModalOpcoes(null)
+    if (fig.status === 'repetida') {
+      setModalRemover({ selId, pos, qtd: fig.qtd })
+    } else {
+      remover(selId, pos)
+      showToast('Figurinha removida do álbum')
+    }
+  }, [remover])
 
   const handleLongPressEspecial = useCallback((key) => {
     setModalAnotacao({ selId: null, pos: null, key })
@@ -177,6 +190,20 @@ export default function App() {
 
       <BottomNav aba={aba} onChange={setAba} />
 
+      {modalOpcoes && (
+        <ModalOpcoes
+          selId={modalOpcoes.selId}
+          pos={modalOpcoes.pos}
+          fig={modalOpcoes.fig}
+          anotacaoAtual={getAnotacao(modalOpcoes.key)}
+          onAnotar={() => {
+            setModalOpcoes(null)
+            setModalAnotacao({ selId: modalOpcoes.selId, pos: modalOpcoes.pos, key: modalOpcoes.key })
+          }}
+          onRemover={() => handleRemoverDireto(modalOpcoes.selId, modalOpcoes.pos, modalOpcoes.fig)}
+          onFechar={() => setModalOpcoes(null)}
+        />
+      )}
       {modalRemover && <ModalRemoverExtras fig={modalRemover} onConfirmar={handleConfirmarRemover} onFechar={() => setModalRemover(null)} />}
       {modalAnotacao && (
         <ModalAnotacao

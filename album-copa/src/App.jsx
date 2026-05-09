@@ -164,6 +164,11 @@ export default function App() {
     showToast(fig.status === 'falta' ? 'Coletada via scanner! ⭐' : 'Extra registrada via scanner')
   }, [getFigurinha, clicarFigurinha])
 
+  const handleScannerEspecial = useCallback((key, fig) => {
+    clicarEspecial(key)
+    showToast(fig.status === 'falta' ? 'Especial coletada! ✨' : 'Extra registrada via scanner')
+  }, [clicarEspecial])
+
   // Stats completas (seleções + especiais)
   const statsCompletas = calcularStatsCompleto(colecao)
 

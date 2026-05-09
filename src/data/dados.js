@@ -1,80 +1,76 @@
 // Bandeiras: Inglaterra e País de Gales usam badge GB (emoji regional não renderiza bem)
 export const SELECOES = [
-  // ── Grupo A — Países-sede ────────────────────────────────
-  { id: 'can', nome: 'Canadá',               flag: '🇨🇦', sigla: 'CAN', grupo: 'A' },
-  { id: 'usa', nome: 'Estados Unidos',        flag: '🇺🇸', sigla: 'USA', grupo: 'A' },
+  // ── Grupo A ──────────────────────────────────────────────
   { id: 'mex', nome: 'México',               flag: '🇲🇽', sigla: 'MEX', grupo: 'A' },
-  { id: 'cur', nome: 'Curaçao',              flag: '🇨🇼', sigla: 'CUR', grupo: 'A' },
+  { id: 'rsa', nome: 'África do Sul',         flag: '🇿🇦', sigla: 'RSA', grupo: 'A' },
+  { id: 'kor', nome: 'Coreia do Sul',          flag: '🇰🇷', sigla: 'KOR', grupo: 'A' },
+  { id: 'cze', nome: 'Rep. Tcheca',            flag: '🇨🇿', sigla: 'CZE', grupo: 'A' },
 
-  // ── Grupo B — América do Norte, Central e Caribe ─────────
-  { id: 'hai', nome: 'Haiti',                flag: '🇭🇹', sigla: 'HAI', grupo: 'B' },
-  { id: 'pan', nome: 'Panamá',               flag: '🇵🇦', sigla: 'PAN', grupo: 'B' },
+  // ── Grupo B ──────────────────────────────────────────────
+  { id: 'can', nome: 'Canadá',                flag: '🇨🇦', sigla: 'CAN', grupo: 'B' },
+  { id: 'bih', nome: 'Bósnia e Herzeg.',       flag: '🇧🇦', sigla: 'BIH', grupo: 'B' },
+  { id: 'qat', nome: 'Catar',                 flag: '🇶🇦', sigla: 'QAT', grupo: 'B' },
+  { id: 'sui', nome: 'Suíça',                 flag: '🇨🇭', sigla: 'SUI', grupo: 'B' },
 
-  // ── Grupo C — América do Sul ─────────────────────────────
-  { id: 'arg', nome: 'Argentina',            flag: '🇦🇷', sigla: 'ARG', grupo: 'C' },
-  { id: 'bra', nome: 'Brasil',               flag: '🇧🇷', sigla: 'BRA', grupo: 'C' },
-  { id: 'ecu', nome: 'Equador',              flag: '🇪🇨', sigla: 'ECU', grupo: 'C' },
-  { id: 'uru', nome: 'Uruguai',              flag: '🇺🇾', sigla: 'URU', grupo: 'C' },
+  // ── Grupo C ──────────────────────────────────────────────
+  { id: 'bra', nome: 'Brasil',                flag: '🇧🇷', sigla: 'BRA', grupo: 'C' },
+  { id: 'mar', nome: 'Marrocos',              flag: '🇲🇦', sigla: 'MAR', grupo: 'C' },
+  { id: 'hai', nome: 'Haiti',                 flag: '🇭🇹', sigla: 'HAI', grupo: 'C' },
+  { id: 'sco', nome: 'Escócia',               flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', sigla: 'SCO', grupo: 'C' },
 
-  // ── Grupo D — América do Sul (cont.) ─────────────────────
-  { id: 'col', nome: 'Colômbia',             flag: '🇨🇴', sigla: 'COL', grupo: 'D' },
-  { id: 'par', nome: 'Paraguai',             flag: '🇵🇾', sigla: 'PAR', grupo: 'D' },
+  // ── Grupo D ──────────────────────────────────────────────
+  { id: 'usa', nome: 'Estados Unidos',         flag: '🇺🇸', sigla: 'USA', grupo: 'D' },
+  { id: 'par', nome: 'Paraguai',              flag: '🇵🇾', sigla: 'PAR', grupo: 'D' },
+  { id: 'aus', nome: 'Austrália',             flag: '🇦🇺', sigla: 'AUS', grupo: 'D' },
+  { id: 'tur', nome: 'Turquia',               flag: '🇹🇷', sigla: 'TUR', grupo: 'D' },
 
-  // ── Grupo E — África ─────────────────────────────────────
-  { id: 'mar', nome: 'Marrocos',             flag: '🇲🇦', sigla: 'MAR', grupo: 'E' },
-  { id: 'tun', nome: 'Tunísia',              flag: '🇹🇳', sigla: 'TUN', grupo: 'E' },
-  { id: 'egy', nome: 'Egito',               flag: '🇪🇬', sigla: 'EGY', grupo: 'E' },
-  { id: 'alg', nome: 'Argélia',             flag: '🇩🇿', sigla: 'ALG', grupo: 'E' },
+  // ── Grupo E ──────────────────────────────────────────────
+  { id: 'ger', nome: 'Alemanha',              flag: '🇩🇪', sigla: 'GER', grupo: 'E' },
+  { id: 'cur', nome: 'Curaçao',               flag: '🇨🇼', sigla: 'CUR', grupo: 'E' },
+  { id: 'civ', nome: 'Costa do Marfim',       flag: '🇨🇮', sigla: 'CIV', grupo: 'E' },
+  { id: 'ecu', nome: 'Equador',               flag: '🇪🇨', sigla: 'ECU', grupo: 'E' },
 
-  // ── Grupo F — África (cont.) ──────────────────────────────
-  { id: 'gha', nome: 'Gana',                flag: '🇬🇭', sigla: 'GHA', grupo: 'F' },
-  { id: 'cpv', nome: 'Cabo Verde',           flag: '🇨🇻', sigla: 'CPV', grupo: 'F' },
-  { id: 'rsa', nome: 'África do Sul',        flag: '🇿🇦', sigla: 'RSA', grupo: 'F' },
-  { id: 'civ', nome: 'Costa do Marfim',      flag: '🇨🇮', sigla: 'CIV', grupo: 'F' },
+  // ── Grupo F ──────────────────────────────────────────────
+  { id: 'ned', nome: 'Holanda',               flag: '🇳🇱', sigla: 'NED', grupo: 'F' },
+  { id: 'jap', nome: 'Japão',                 flag: '🇯🇵', sigla: 'JPN', grupo: 'F' },
+  { id: 'swe', nome: 'Suécia',                flag: '🇸🇪', sigla: 'SWE', grupo: 'F' },
+  { id: 'tun', nome: 'Tunísia',               flag: '🇹🇳', sigla: 'TUN', grupo: 'F' },
 
-  // ── Grupo G — África (cont.) ──────────────────────────────
-  { id: 'sen', nome: 'Senegal',              flag: '🇸🇳', sigla: 'SEN', grupo: 'G' },
-  { id: 'cod', nome: 'RD Congo',             flag: '🇨🇩', sigla: 'COD', grupo: 'G' },
+  // ── Grupo G ──────────────────────────────────────────────
+  { id: 'bel', nome: 'Bélgica',               flag: '🇧🇪', sigla: 'BEL', grupo: 'G' },
+  { id: 'egy', nome: 'Egito',                 flag: '🇪🇬', sigla: 'EGY', grupo: 'G' },
+  { id: 'irn', nome: 'Irã',                   flag: '🇮🇷', sigla: 'IRN', grupo: 'G' },
+  { id: 'nzl', nome: 'Nova Zelândia',         flag: '🇳🇿', sigla: 'NZL', grupo: 'G' },
 
-  // ── Grupo H — Ásia ───────────────────────────────────────
-  { id: 'jap', nome: 'Japão',               flag: '🇯🇵', sigla: 'JPN', grupo: 'H' },
-  { id: 'irn', nome: 'Irã',                 flag: '🇮🇷', sigla: 'IRN', grupo: 'H' },
-  { id: 'uzb', nome: 'Uzbequistão',         flag: '🇺🇿', sigla: 'UZB', grupo: 'H' },
-  { id: 'kor', nome: 'Coreia do Sul',        flag: '🇰🇷', sigla: 'KOR', grupo: 'H' },
+  // ── Grupo H ──────────────────────────────────────────────
+  { id: 'esp', nome: 'Espanha',               flag: '🇪🇸', sigla: 'ESP', grupo: 'H' },
+  { id: 'cpv', nome: 'Cabo Verde',            flag: '🇨🇻', sigla: 'CPV', grupo: 'H' },
+  { id: 'ksa', nome: 'Arábia Saudita',        flag: '🇸🇦', sigla: 'KSA', grupo: 'H' },
+  { id: 'uru', nome: 'Uruguai',               flag: '🇺🇾', sigla: 'URU', grupo: 'H' },
 
-  // ── Grupo I — Ásia (cont.) ───────────────────────────────
-  { id: 'jor', nome: 'Jordânia',            flag: '🇯🇴', sigla: 'JOR', grupo: 'I' },
-  { id: 'aus', nome: 'Austrália',           flag: '🇦🇺', sigla: 'AUS', grupo: 'I' },
-  { id: 'qat', nome: 'Catar',              flag: '🇶🇦', sigla: 'QAT', grupo: 'I' },
-  { id: 'ksa', nome: 'Arábia Saudita',     flag: '🇸🇦', sigla: 'KSA', grupo: 'I' },
+  // ── Grupo I ──────────────────────────────────────────────
+  { id: 'fra', nome: 'França',                flag: '🇫🇷', sigla: 'FRA', grupo: 'I' },
+  { id: 'sen', nome: 'Senegal',               flag: '🇸🇳', sigla: 'SEN', grupo: 'I' },
+  { id: 'irq', nome: 'Iraque',                flag: '🇮🇶', sigla: 'IRQ', grupo: 'I' },
+  { id: 'nor', nome: 'Noruega',               flag: '🇳🇴', sigla: 'NOR', grupo: 'I' },
 
-  // ── Grupo J — Ásia (cont.) + Oceania ─────────────────────
-  { id: 'irq', nome: 'Iraque',             flag: '🇮🇶', sigla: 'IRQ', grupo: 'J' },
-  { id: 'nzl', nome: 'Nova Zelândia',      flag: '🇳🇿', sigla: 'NZL', grupo: 'J' },
+  // ── Grupo J ──────────────────────────────────────────────
+  { id: 'arg', nome: 'Argentina',             flag: '🇦🇷', sigla: 'ARG', grupo: 'J' },
+  { id: 'alg', nome: 'Argélia',               flag: '🇩🇿', sigla: 'ALG', grupo: 'J' },
+  { id: 'aut', nome: 'Áustria',               flag: '🇦🇹', sigla: 'AUT', grupo: 'J' },
+  { id: 'jor', nome: 'Jordânia',              flag: '🇯🇴', sigla: 'JOR', grupo: 'J' },
 
-  // ── Grupo K — Europa ─────────────────────────────────────
-  { id: 'eng', nome: 'Inglaterra',         flag: null,   sigla: 'GB',  grupo: 'K' },
-  { id: 'fra', nome: 'França',             flag: '🇫🇷', sigla: 'FRA', grupo: 'K' },
-  { id: 'cro', nome: 'Croácia',            flag: '🇭🇷', sigla: 'CRO', grupo: 'K' },
-  { id: 'por', nome: 'Portugal',           flag: '🇵🇹', sigla: 'POR', grupo: 'K' },
+  // ── Grupo K ──────────────────────────────────────────────
+  { id: 'por', nome: 'Portugal',              flag: '🇵🇹', sigla: 'POR', grupo: 'K' },
+  { id: 'cod', nome: 'RD Congo',              flag: '🇨🇩', sigla: 'COD', grupo: 'K' },
+  { id: 'uzb', nome: 'Uzbequistão',           flag: '🇺🇿', sigla: 'UZB', grupo: 'K' },
+  { id: 'col', nome: 'Colômbia',              flag: '🇨🇴', sigla: 'COL', grupo: 'K' },
 
-  // ── Grupo L — Europa (cont.) ─────────────────────────────
-  { id: 'nor', nome: 'Noruega',            flag: '🇳🇴', sigla: 'NOR', grupo: 'L' },
-  { id: 'ned', nome: 'Holanda',            flag: '🇳🇱', sigla: 'NED', grupo: 'L' },
-  { id: 'ger', nome: 'Alemanha',           flag: '🇩🇪', sigla: 'GER', grupo: 'L' },
-  { id: 'sui', nome: 'Suíça',             flag: '🇨🇭', sigla: 'SUI', grupo: 'L' },
-
-  // ── Grupo M — Europa (cont.) ─────────────────────────────
-  { id: 'aut', nome: 'Áustria',            flag: '🇦🇹', sigla: 'AUT', grupo: 'M' },
-  { id: 'bel', nome: 'Bélgica',            flag: '🇧🇪', sigla: 'BEL', grupo: 'M' },
-  { id: 'esp', nome: 'Espanha',            flag: '🇪🇸', sigla: 'ESP', grupo: 'M' },
-  { id: 'sco', nome: 'Escócia',            flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', sigla: 'SCO', grupo: 'M' },
-
-  // ── Grupo N — Europa (cont.) ─────────────────────────────
-  { id: 'tur', nome: 'Turquia',            flag: '🇹🇷', sigla: 'TUR', grupo: 'N' },
-  { id: 'cze', nome: 'Rep. Tcheca',        flag: '🇨🇿', sigla: 'CZE', grupo: 'N' },
-  { id: 'swe', nome: 'Suécia',             flag: '🇸🇪', sigla: 'SWE', grupo: 'N' },
-  { id: 'bih', nome: 'Bósnia e Herzeg.',   flag: '🇧🇦', sigla: 'BIH', grupo: 'N' },
+  // ── Grupo L ──────────────────────────────────────────────
+  { id: 'eng', nome: 'Inglaterra',            flag: 'ENG', sigla: 'ENG', grupo: 'L' },
+  { id: 'cro', nome: 'Croácia',               flag: '🇭🇷', sigla: 'CRO', grupo: 'L' },
+  { id: 'gha', nome: 'Gana',                  flag: '🇬🇭', sigla: 'GHA', grupo: 'L' },
+  { id: 'pan', nome: 'Panamá',                flag: '🇵🇦', sigla: 'PAN', grupo: 'L' },
 ]
 
 // Renderiza flag ou sigla como fallback

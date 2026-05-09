@@ -1,9 +1,32 @@
-// Renderiza emoji de bandeira ou badge de sigla quando o emoji não existe
+// Renderiza emoji de bandeira, badge de sigla, ou Cruz de São Jorge para Inglaterra
 export function FlagBadge({ sel, size = 26 }) {
-  if (sel.flag) {
+  // Inglaterra — Cruz de São Jorge (cruz vermelha em fundo branco)
+  if (sel.flag === 'ENG' || sel.id === 'eng') {
+    const s = size
+    return (
+      <svg
+        width={s * 1.4}
+        height={s}
+        viewBox="0 0 28 20"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ borderRadius: 2, flexShrink: 0 }}
+      >
+        {/* Fundo branco */}
+        <rect width="28" height="20" fill="#ffffff"/>
+        {/* Cruz vermelha horizontal */}
+        <rect x="0" y="7.5" width="28" height="5" fill="#cf091b"/>
+        {/* Cruz vermelha vertical */}
+        <rect x="11.5" y="0" width="5" height="20" fill="#cf091b"/>
+      </svg>
+    )
+  }
+
+  // Emoji de bandeira normal
+  if (sel.flag && sel.flag !== null && sel.flag.length > 2) {
     return <span style={{ fontSize: size, lineHeight: 1 }}>{sel.flag}</span>
   }
-  // Fallback para GB e similares
+
+  // Fallback: badge com sigla (GB, etc.)
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', justifyContent: 'center',

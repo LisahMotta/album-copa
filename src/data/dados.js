@@ -80,17 +80,26 @@ export function renderFlag(sel, size = 26) {
 }
 
 export const POSICOES = [
-  'Escudo',
-  'Goleiro 1', 'Goleiro 2',
-  'Zagueiro 1', 'Zagueiro 2', 'Zagueiro 3',
-  'Lateral Dir.', 'Lateral Esq.',
-  'Volante 1', 'Volante 2',
-  'Meia 1', 'Meia 2',
-  'Ponta Direita', 'Ponta Esquerda',
-  'Camisa 10',
-  'Atacante 1', 'Atacante 2',
-  'Capitão',
-  'Reserva 1', 'Reserva 2',
+  'Escudo',           // 1
+  'Goleiro 1',        // 2
+  'Goleiro 2',        // 3
+  'Zagueiro 1',       // 4
+  'Zagueiro 2',       // 5
+  'Zagueiro 3',       // 6
+  'Lateral Dir.',     // 7
+  'Lateral Esq.',     // 8
+  'Volante 1',        // 9
+  'Volante 2',        // 10
+  'Meia 1',           // 11
+  'Meia 2',           // 12
+  'Foto do Time',     // 13 ← foto completa da seleção
+  'Ponta Esquerda',   // 14
+  'Camisa 10',        // 15
+  'Atacante 1',       // 16
+  'Atacante 2',       // 17
+  'Capitão',          // 18
+  'Reserva 1',        // 19
+  'Reserva 2',        // 20
 ]
 
 export const TOTAL_POR_SELECAO = POSICOES.length  // 20

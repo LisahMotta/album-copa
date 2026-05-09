@@ -239,42 +239,51 @@ export function verificarConquistas(colecao, historico) {
   return CONQUISTAS.map(c => ({ ...c, desbloqueada: c.check(colecao, historico) }))
 }
 
-// ── Figurinhas Especiais (estádios, troféu, bolas, etc.) ─────────────────
-// 48 seleções × 20 fig = 960 + 20 especiais = 980 total
+// ── Figurinhas Especiais do Álbum Oficial ───────────────────
+// FWC 1-19: FIFA World Cup (troféu, bola, mascote, etc.)
+// CC 1-14: Copa Cities (estádios das cidades-sede)
+// Total: 33 especiais
 export const ESPECIAIS = [
-  // Troféus e símbolos
-  { id: 'esp_01', nome: 'Taça FIFA World Cup',       icon: '🏆', categoria: 'Troféu' },
-  { id: 'esp_02', nome: 'Troféu — Verso',            icon: '🏆', categoria: 'Troféu' },
+  // ── FWC — FIFA World Cup (19 figurinhas) ─────────────────
+  { id: 'fwc_01', nome: 'FWC 1 — Taça FIFA',             icon: '🏆', categoria: 'FWC', siglaAlbum: 'FWC 1'  },
+  { id: 'fwc_02', nome: 'FWC 2 — Taça FIFA (verso)',      icon: '🏆', categoria: 'FWC', siglaAlbum: 'FWC 2'  },
+  { id: 'fwc_03', nome: 'FWC 3 — Bola Oficial',          icon: '⚽', categoria: 'FWC', siglaAlbum: 'FWC 3'  },
+  { id: 'fwc_04', nome: 'FWC 4 — Bola (detalhe)',        icon: '⚽', categoria: 'FWC', siglaAlbum: 'FWC 4'  },
+  { id: 'fwc_05', nome: 'FWC 5 — Mascote Oficial',       icon: '🦅', categoria: 'FWC', siglaAlbum: 'FWC 5'  },
+  { id: 'fwc_06', nome: 'FWC 6 — Mascote (pose 2)',      icon: '🦅', categoria: 'FWC', siglaAlbum: 'FWC 6'  },
+  { id: 'fwc_07', nome: 'FWC 7 — Logo Copa 2026',        icon: '🌟', categoria: 'FWC', siglaAlbum: 'FWC 7'  },
+  { id: 'fwc_08', nome: 'FWC 8 — Logo (variação)',       icon: '🌟', categoria: 'FWC', siglaAlbum: 'FWC 8'  },
+  { id: 'fwc_09', nome: 'FWC 9 — Capa do Álbum',        icon: '📔', categoria: 'FWC', siglaAlbum: 'FWC 9'  },
+  { id: 'fwc_10', nome: 'FWC 10 — Troféu + Bola',       icon: '🏆', categoria: 'FWC', siglaAlbum: 'FWC 10' },
+  { id: 'fwc_11', nome: 'FWC 11 — FIFA World Cup',       icon: '🌍', categoria: 'FWC', siglaAlbum: 'FWC 11' },
+  { id: 'fwc_12', nome: 'FWC 12 — Mapa das Sedes',       icon: '🗺️', categoria: 'FWC', siglaAlbum: 'FWC 12' },
+  { id: 'fwc_13', nome: 'FWC 13 — Mascote + Troféu',    icon: '🦅', categoria: 'FWC', siglaAlbum: 'FWC 13' },
+  { id: 'fwc_14', nome: 'FWC 14 — Arte Oficial',        icon: '🎨', categoria: 'FWC', siglaAlbum: 'FWC 14' },
+  { id: 'fwc_15', nome: 'FWC 15 — Pôster Oficial',      icon: '🖼️', categoria: 'FWC', siglaAlbum: 'FWC 15' },
+  { id: 'fwc_16', nome: 'FWC 16 — Abertura da Copa',    icon: '🎉', categoria: 'FWC', siglaAlbum: 'FWC 16' },
+  { id: 'fwc_17', nome: 'FWC 17 — Seleção All-Stars',   icon: '⭐', categoria: 'FWC', siglaAlbum: 'FWC 17' },
+  { id: 'fwc_18', nome: 'FWC 18 — Melhor do Mundo',     icon: '🥇', categoria: 'FWC', siglaAlbum: 'FWC 18' },
+  { id: 'fwc_19', nome: 'FWC 19 — Campeão 2026',        icon: '🏆', categoria: 'FWC', siglaAlbum: 'FWC 19' },
 
-  // Bolas oficiais
-  { id: 'esp_03', nome: 'Bola Oficial 2026',         icon: '⚽', categoria: 'Bola' },
-  { id: 'esp_04', nome: 'Bola — Detalhe',            icon: '⚽', categoria: 'Bola' },
-  { id: 'esp_05', nome: 'Bola do 1º Jogo',           icon: '⚽', categoria: 'Bola' },
-
-  // Estádios — USA
-  { id: 'esp_06', nome: 'MetLife Stadium',           icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_07', nome: 'SoFi Stadium',              icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_08', nome: 'AT&T Stadium',              icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_09', nome: 'Levi\'s Stadium',           icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_10', nome: 'Arrowhead Stadium',         icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_11', nome: 'Lincoln Financial Field',   icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_12', nome: 'Hard Rock Stadium',         icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_13', nome: 'Gillette Stadium',          icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_14', nome: 'Seattle Stadium',           icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_15', nome: 'NRG Stadium',               icon: '🏟️', categoria: 'Estádio' },
-
-  // Estádios — Canadá e México
-  { id: 'esp_16', nome: 'BC Place — Vancouver',      icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_17', nome: 'BMO Field — Toronto',       icon: '🏟️', categoria: 'Estádio' },
-  { id: 'esp_18', nome: 'Estádio Azteca — Cidade do México', icon: '🏟️', categoria: 'Estádio' },
-
-  // Mascote e capa
-  { id: 'esp_19', nome: 'Mascote Oficial',           icon: '🦅', categoria: 'Especial' },
-  { id: 'esp_20', nome: 'Capa do Álbum',             icon: '📔', categoria: 'Especial' },
+  // ── CC — Coca-Cola (jogadores patrocinados, 14 figurinhas) ─
+  { id: 'cc_01', nome: 'CC 1 — Lamine Yamal',        icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 1',  pais: '🇪🇸' },
+  { id: 'cc_02', nome: 'CC 2 — Joshua Kimmich',      icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 2',  pais: '🇩🇪' },
+  { id: 'cc_03', nome: 'CC 3 — Harry Kane',          icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 3',  pais: '🇬🇧' },
+  { id: 'cc_04', nome: 'CC 4 — Santiago Gimenez',    icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 4',  pais: '🇲🇽' },
+  { id: 'cc_05', nome: 'CC 5 — Josko Gvardiol',      icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 5',  pais: '🇭🇷' },
+  { id: 'cc_06', nome: 'CC 6 — Federico Valverde',   icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 6',  pais: '🇺🇾' },
+  { id: 'cc_07', nome: 'CC 7 — Jefferson Lerma',     icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 7',  pais: '🇨🇴' },
+  { id: 'cc_08', nome: 'CC 8 — Enner Valencia',      icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 8',  pais: '🇪🇨' },
+  { id: 'cc_09', nome: 'CC 9 — Gabriel Magalhães',   icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 9',  pais: '🇧🇷' },
+  { id: 'cc_10', nome: 'CC 10 — Virgil van Dijk',    icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 10', pais: '🇳🇱' },
+  { id: 'cc_11', nome: 'CC 11 — Alphonso Davies',    icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 11', pais: '🇨🇦' },
+  { id: 'cc_12', nome: 'CC 12 — Emiliano Martínez',  icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 12', pais: '🇦🇷' },
+  { id: 'cc_13', nome: 'CC 13 — Raúl Jiménez',       icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 13', pais: '🇲🇽' },
+  { id: 'cc_14', nome: 'CC 14 — Lautaro Martínez',   icon: '🥤', categoria: 'CC', siglaAlbum: 'CC 14', pais: '🇦🇷' },
 ]
 
-export const TOTAL_ESPECIAIS = ESPECIAIS.length  // 20
-export const TOTAL_GERAL = SELECOES.length * TOTAL_POR_SELECAO + TOTAL_ESPECIAIS  // 980
+export const TOTAL_ESPECIAIS = ESPECIAIS.length  // 33
+export const TOTAL_GERAL = SELECOES.length * TOTAL_POR_SELECAO + TOTAL_ESPECIAIS  // 993
 
 // Chave para figurinha especial
 export function gerarChaveEspecial(id) {

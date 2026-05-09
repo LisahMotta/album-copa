@@ -1,6 +1,6 @@
 import { ESPECIAIS, gerarChaveEspecial } from '../data/dados'
 
-const CATEGORIAS = ['Troféu', 'Bola', 'Estádio', 'Especial']
+const CATEGORIAS = ['FWC', 'CC']
 
 export function Especiais({ colecao, onClique, onLongPress, anotacoes }) {
   // Agrupa por categoria
@@ -28,7 +28,7 @@ export function Especiais({ colecao, onClique, onLongPress, anotacoes }) {
             FIGURINHAS ESPECIAIS
           </div>
           <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', marginTop: 3 }}>
-            Estádios · Troféus · Bolas · Mascote
+            FWC 1-19 · CC 1-14 · Figurinhas Especiais
           </div>
         </div>
         <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, color: 'var(--gold-light)' }}>
@@ -125,16 +125,40 @@ export function Especiais({ colecao, onClique, onLongPress, anotacoes }) {
                     <div style={{ position: 'absolute', bottom: 4, right: 4, width: 8, height: 8, borderRadius: '50%', background: '#60a5fa' }} />
                   )}
 
-                  {/* Ícone */}
-                  <span style={{ fontSize: 28, lineHeight: 1 }}>{esp.icon}</span>
-
-                  {/* Nome */}
+                  {/* Sigla do álbum em destaque */}
                   <div style={{
-                    fontSize: 10, textAlign: 'center', lineHeight: 1.3,
-                    color: coletada ? (fig.status === 'repetida' ? '#166534' : '#92640a') : 'var(--text-muted)',
-                    fontWeight: coletada ? 600 : 400,
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 13, fontWeight: 700, letterSpacing: '0.04em',
+                    color: coletada
+                      ? (fig.status === 'repetida' ? '#166534' : '#92640a')
+                      : 'var(--text-muted)',
+                    lineHeight: 1,
                   }}>
-                    {esp.nome}
+                    {esp.siglaAlbum}
+                  </div>
+
+                  {/* Bandeira (CC e FWC sedes) ou ícone (FWC demais) */}
+                  {esp.pais
+                    ? <span style={{ fontSize: 20, lineHeight: 1 }}>{esp.pais}</span>
+                    : typeof esp.icon === 'string' && esp.icon.length <= 2 && esp.icon.codePointAt(0) > 127000
+                      ? <span style={{ fontSize: 20, lineHeight: 1 }}>{esp.icon}</span>
+                      : <span style={{ fontSize: 22, lineHeight: 1 }}>{esp.icon}</span>
+                  }
+
+                  {/* Nome curto — extrai parte após o traço */}
+                  <div style={{
+                    fontSize: 9, textAlign: 'center', lineHeight: 1.2,
+                    color: coletada ? (fig.status === 'repetida' ? '#166634' : '#92640a') : 'var(--text-muted)',
+                    fontWeight: coletada ? 600 : 400,
+                    padding: '0 2px',
+                  }}>
+                    {(() => {
+                      const parte = esp.nome.split('—')[1]?.trim() || esp.nome
+                      // Se termina com ano (ex: "Brasil 2014"), destacar o ano
+                      const matchAno = parte.match(/^(.+)\s(\d{4})$/)
+                      if (matchAno) return <><span style={{display:'block'}}>{matchAno[1]}</span><span style={{fontWeight:700,color: coletada ? 'inherit' : 'var(--gold)'}}>{matchAno[2]}</span></>
+                      return parte
+                    })()}
                   </div>
                 </div>
               )

@@ -224,7 +224,7 @@ export default function App() {
           onFechar={() => setModalAnotacao(null)}
         />
       )}
-      {modalScanner && <Scanner colecao={colecao} onColetar={handleScannerColetar} onFechar={() => setModalScanner(false)} />}
+      {modalScanner && <Scanner colecao={colecao} onColetar={handleScannerColetar} onColetarEspecial={handleScannerEspecial} onFechar={() => setModalScanner(false)} />}
       {modalImagem  && <GerarImagem colecao={colecao} onFechar={() => setModalImagem(false)} />}
       <Toast />
     </>

@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { SELECOES, POSICOES, ESPECIAIS, gerarChaveEspecial } from '../data/dados'
+import { FlagBadge } from './FlagBadge'
 
 export function Scanner({ colecao, onColetar, onColetarEspecial, onFechar }) {
   const [input, setInput]       = useState('')
@@ -36,6 +37,7 @@ export function Scanner({ colecao, onColetar, onColetarEspecial, onFechar }) {
     const sel = SELECOES.find(s =>
       s.sigla === siglaInput ||
       s.id.toUpperCase() === siglaInput ||
+      s.nome.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s/g,'').startsWith(siglaInput) ||
       s.nome.toUpperCase().replace(/\s/g,'').startsWith(siglaInput)
     )
     if (!sel) return { erro: `Seleção "${siglaInput}" não encontrada` }
@@ -85,7 +87,7 @@ export function Scanner({ colecao, onColetar, onColetarEspecial, onFechar }) {
 
         {/* Atalhos rápidos */}
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
-          {['BRA','ARG','FRA','ESP','POR','FWC','CC'].map(s => (
+          {['BRA','ARG','FRA','ESP','ENG','FWC','CC'].map(s => (
             <button key={s} onClick={() => setInput(s)} style={{
               padding: '4px 10px', borderRadius: 8,
               border: `1px solid ${s === 'FWC' ? 'var(--gold)' : s === 'CC' ? '#e83a2a' : 'var(--border)'}`,
@@ -141,9 +143,7 @@ export function Scanner({ colecao, onColetar, onColetarEspecial, onFechar }) {
                     {resultado.esp.pais || resultado.esp.icon}
                   </span>
                 ) : (
-                  <span style={{ fontSize: 28 }}>
-                    {resultado.sel.flag || resultado.sel.sigla}
-                  </span>
+                  <FlagBadge sel={resultado.sel} size={28} />
                 )}
                 <div style={{ flex: 1 }}>
                   {resultado.tipo === 'especial' ? (
